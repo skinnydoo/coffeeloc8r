@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">@color/white</color>
+  <color name="colorPrimaryDark">@color/grey_100</color>
+  <color name="colorAccent">@color/red</color>
+
+  <color name="white">#FFFFFF</color>
+  <color name="white_ish">#FAFAFA</color>
+
+  <color name="grey_100">#f5f5f5</color>
+  <color name="grey_400">#e0e0e0</color>
+
+  <color name="black">#000000</color>
+
+  <color name="red">#EE2F4F</color>
+
+  <color name="transparent">#00000000</color>
+  <color name="transparent_80p">#CC000000</color>
+  <color name="transparent_70p">#B3000000</color>
+  <color name="transparent_60p">#99000000</color>
+  <color name="transparent_50p">#80000000</color>
+  <color name="transparent_40p">#66000000</color>
+  <color name="transparent_35p">#59000000</color>
+  <color name="transparent_30p">#4D000000</color>
+  <color name="transparent_25p">#40000000</color>
+  <color name="transparent_20p">#33000000</color>
+
+
+  <color name="ripple_light">@color/grey_400</color>
+</resources>
