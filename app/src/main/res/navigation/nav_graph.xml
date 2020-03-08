@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/permission_dest">
+
+    <fragment
+        android:id="@+id/permission_dest"
+        android:name="com.skinnydoo.coffeeloc8r.ui.home.PermissionFragment"
+        android:label="PermissionFragment">
+        <action
+            android:id="@+id/to_home_dest"
+            app:destination="@id/home_dest"
+            app:popUpTo="@id/permission_dest"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/home_dest"
+        android:name="com.skinnydoo.coffeeloc8r.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/to_permission_dest"
+            app:destination="@id/permission_dest"
+            app:popUpTo="@id/home_dest"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+</navigation>

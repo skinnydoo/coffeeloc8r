@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.skinnydoo.coffeeloc8r.utils.StringUtils" />
+
+        <variable
+            name="item"
+            type="com.skinnydoo.coffeeloc8r.domain.home.CoffeeShop" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        >
+
+        <ImageView
+            android:id="@+id/coffee_cup_ic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_coffee_cup_ic"
+            app:drawable="@{item.favorite ? @drawable/ic_coffee_cup_green_24 : @drawable/ic_coffee_cup_red_24}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/coffee_shop_name_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_coffee_cup_red_24" />
+
+        <TextView
+            android:id="@+id/coffee_shop_name_tv"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="@dimen/no_spacing"
+            android:fontFamily="@font/circularstd_book"
+            android:gravity="start|center"
+            android:maxLines="1"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:text="@{item.name}"
+            android:textColor="?attr/colorAccent"
+            android:textSize="@dimen/font_large"
+            app:autoSizeMaxTextSize="@dimen/font_large"
+            app:autoSizeMinTextSize="@dimen/font_default"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/status_container"
+            app:layout_constraintStart_toEndOf="@id/coffee_cup_ic"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Tim Hortons" />
+
+        <LinearLayout
+            android:id="@+id/status_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/coffee_shop_name_tv"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/coffee_shop_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@{item.open ? @color/red: @color/brown}"
+                android:clickable="false"
+                android:elevation="@dimen/no_spacing"
+                android:focusable="false"
+                android:fontFamily="@font/circularstd_bold"
+                android:insetLeft="@dimen/no_spacing"
+                android:insetTop="@dimen/no_spacing"
+                android:insetRight="@dimen/no_spacing"
+                android:insetBottom="@dimen/no_spacing"
+                android:minWidth="@dimen/no_spacing"
+                android:minHeight="@dimen/no_spacing"
+                android:paddingTop="@dimen/spacing_small"
+                android:includeFontPadding="false"
+                android:paddingBottom="@dimen/spacing_small"
+                android:text="@{item.open ? @string/coffee_shop_status_open : @string/coffee_shop_status_closed}"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                tools:backgroundTint="@color/red"
+                tools:text="Closed" />
+
+
+            <TextView
+                android:id="@+id/coffee_shop_distance_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_tiny"
+                android:fontFamily="@font/circularstd_book"
+                android:gravity="center"
+                android:text="@{StringUtils.formattedDistance(item.distance)}"
+                android:textColor="?attr/colorAccent"
+                android:textSize="@dimen/font_default"
+                tools:text="3km" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

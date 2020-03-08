@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- font sizes -->
+    <dimen name="font_xhuge">50sp</dimen>
+    <dimen name="font_huge">45sp</dimen>
+    <dimen name="font_xxxlarge">40sp</dimen>
+    <dimen name="font_xxlarge">32sp</dimen>
+    <dimen name="font_xlarge_title">26sp</dimen>
+    <dimen name="font_xlarge">24sp</dimen>
+    <dimen name="font_large">22sp</dimen>
+    <dimen name="font_xmedium">20sp</dimen>
+    <dimen name="font_medium">18sp</dimen>
+    <dimen name="font_normal">16sp</dimen>
+    <dimen name="font_default">14sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+
+    <!-- typical spacing between views -->
+    <dimen name="spacing_huge_100">100dp</dimen>
+    <dimen name="spacing_huge_92">92dp</dimen>
+    <dimen name="spacing_huge_80">80dp</dimen>
+    <dimen name="spacing_huge_64">64dp</dimen>
+    <dimen name="spacing_huge_56">56dp</dimen>
+    <dimen name="spacing_huge_48">48dp</dimen>
+    <dimen name="spacing_large_36">36dp</dimen>
+    <dimen name="spacing_large_32">32dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_xsmall">12dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_tinier">2dp</dimen>
+    <dimen name="spacing_xtinier">1dp</dimen>
+    <dimen name="no_spacing">0dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!--Buttons -->
+    <dimen name="button_height_xxtall">100dp</dimen>
+    <dimen name="button_height_xtall">90dp</dimen>
+    <dimen name="button_height_taller">80dp</dimen>
+    <dimen name="button_height_tall">60dp</dimen>
+    <dimen name="button_height_normal">40dp</dimen>
+    <dimen name="button_height_short">32dp</dimen>
+    <dimen name="button_width_xxxlarge">200dp</dimen>
+    <dimen name="button_width_xxlarge">160dp</dimen>
+    <dimen name="button_width_xlarge">140dp</dimen>
+    <dimen name="button_width_larger">120dp</dimen>
+    <dimen name="button_width_large">100dp</dimen>
+    <dimen name="button_width_medium">80dp</dimen>
+
+
+    <!--TextViews-->
+    <dimen name="textview_height_tall">60dp</dimen>
+    <dimen name="textview_height_normal">40dp</dimen>
+    <dimen name="textview_height_short">32dp</dimen>
+
+    <dimen name="dot_pager_indicator_size">6dp</dimen>
+
+    <dimen name="elevation_default">4dp</dimen>
+    <dimen name="elevation_small">2dp</dimen>
+    <dimen name="tab_indicator_height">4dp</dimen>
+
+    <dimen name="bottom_sheet_height">300dp</dimen>
+
+    <!-- radius -->
+    <dimen name="corner_radius_5">5dp</dimen>
+    <dimen name="corner_radius_10">10dp</dimen>
+    <dimen name="corner_radius_8">8dp</dimen>
+
+    <!--guideline-->
+    <dimen name="guideline_vertical_56">56dp</dimen>
+
+
+</resources>
