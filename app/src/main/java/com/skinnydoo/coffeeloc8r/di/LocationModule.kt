@@ -39,7 +39,7 @@ class LocationModule {
              * application will never receive update faster than this value
              */
             fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
-            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
     @Singleton
@@ -53,7 +53,7 @@ class LocationModule {
 
     companion object {
         // The desired interval for location updates.
-        private const val UPDATE_INTERVAL_IN_MILLISECONDS = 1000 * 60 * 10L // 10 min
+        private const val UPDATE_INTERVAL_IN_MILLISECONDS = 10 * 60 * 1000L // 10 min
         // The fastest rate for active location updates.
         private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2

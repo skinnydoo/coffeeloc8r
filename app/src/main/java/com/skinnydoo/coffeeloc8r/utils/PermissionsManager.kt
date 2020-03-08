@@ -17,14 +17,6 @@ class PermissionsManager @Inject constructor(
     private val prefs: SharedPreferences
 ) {
 
-    fun shouldRequestPermission(context: Context, permission: String): Boolean {
-        if (shouldRequestPermission()) {
-            val permissionState = ContextCompat.checkSelfPermission(context, permission)
-            return permissionState != PackageManager.PERMISSION_GRANTED
-        }
-        return false
-    }
-
     fun requestPermission(activity: AppCompatActivity, permission: String, callBack: PermissionsManagerListener) {
         if (shouldRequestPermission(activity, permission)) {
 
@@ -51,8 +43,6 @@ class PermissionsManager @Inject constructor(
         }
     }
 
-    private fun shouldRequestPermission(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-
 
     private fun isFirstTimeRequesting(permission: String) = prefs.getBoolean(permission, true)
 
@@ -65,5 +55,19 @@ class PermissionsManager @Inject constructor(
         fun onPermissionPreviouslyDenied()
         fun onPermissionPreviouslyDeniedWithNeverAskAgain()
         fun onPermissionGranted()
+    }
+
+    companion object {
+
+        fun shouldRequestPermission(context: Context, permission: String): Boolean {
+            if (shouldRequestPermission()) {
+                val permissionState = ContextCompat.checkSelfPermission(context, permission)
+                return permissionState != PackageManager.PERMISSION_GRANTED
+            }
+            return false
+        }
+
+        private fun shouldRequestPermission(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
     }
 }

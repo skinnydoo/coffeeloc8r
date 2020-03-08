@@ -91,6 +91,11 @@ fun ImageView.bindDrawableRes(@DrawableRes resId: Int) {
     setImageResource(resId)
 }
 
+@BindingAdapter("drawable")
+fun ImageView.bindDrawable(drawable: Drawable?) {
+    setImageDrawable(drawable)
+}
+
 
 /**
  * In [ProgressBar], [ProgressBar.setMax] must be called before [ProgressBar.setProgress].

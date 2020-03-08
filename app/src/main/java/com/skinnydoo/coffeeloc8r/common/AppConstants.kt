@@ -9,8 +9,4 @@ object AppConstants {
   const val VIEW_HOLDER_ERROR = "Unknown view holder"
   const val ACTIVITY_NULL = "Activity cannot be null"
 
-  //Requests
-  const val REQUEST_CHECK_SETTINGS = 111
-  const val PERMISSIONS_REQUEST_COARSE_LOCATION = 112
-  const val REQUEST_ENABLE_GPS = 113
 }

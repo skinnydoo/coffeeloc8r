@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">CoffeeLoc8r</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="app_location_rational_title">CoffeeLoc8r need to know your location</string>
+    <string name="app_location_rational_msg">to show coffee shops around your you.</string>
+
+    <!--Errors-->
+    <string name="error_location_settings_inadequate">Your location settings are inadequate, and cannot be fixed here. Please fix in Settings.
+    </string>
+    <string name="error_permission_denied_explanation">Permission was denied, but is needed for core functionality.
+    </string>
+    <string name="error_failed_to_get_device_location">Failed to get phone location.</string>
+
+    <!--Dialogs-->
+    <string name="dialog_error_title">Error!</string>
+    <string name="dialog_action_dont_allow">Don’t Allow</string>
+    <string name="dialog_action_ok">OK</string>
+
+    <!--Image Content Description-->
+    <string name="content_description_coffee_cup_ic">Coffee cup icon</string>
+
+    <!--Home screen-->
+    <string name="coffee_shop_status_open">Open</string>
+    <string name="coffee_shop_status_closed">Closed</string>
 </resources>

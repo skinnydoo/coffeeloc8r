@@ -8,7 +8,7 @@
 
     <!-- company logo -->
     <item
-        android:drawable="@drawable/splash_logo_heart_200"
+        android:drawable="@drawable/splash_logo_heart_100"
         android:gravity="center" />
 
 </layer-list>
