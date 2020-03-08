@@ -29,13 +29,7 @@ class MainActivity : BaseFragmentFactoryActivity() {
   }
 
   private fun initView() {
-    setupToolbar()
     setUpListeners()
-  }
-
-  private fun setupToolbar() {
-    setSupportActionBar(binding.toolbarInclude.toolbar)
-    supportActionBar?.setDisplayShowTitleEnabled(false)
   }
 
   private fun setUpListeners() {

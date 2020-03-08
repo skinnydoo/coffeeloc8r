@@ -7,10 +7,12 @@ import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.databinding.ListItemBottomSheetBinding
 import com.skinnydoo.coffeeloc8r.domain.home.CoffeeShop
 import com.skinnydoo.coffeeloc8r.ui.adapter.DataBoundListAdapter
+import com.skinnydoo.coffeeloc8r.ui.home.models.HomeActor
 import com.skinnydoo.coffeeloc8r.utils.extensions.bind
 
 class BottomSheetAdapter(
-    appExecutors: AppExecutors
+    appExecutors: AppExecutors,
+    private val actor: HomeActor
 ) : DataBoundListAdapter<CoffeeShop, ListItemBottomSheetBinding>(
     appExecutors,
     BottomSheetItemDiff
@@ -22,6 +24,7 @@ class BottomSheetAdapter(
 
     override fun bind(binding: ListItemBottomSheetBinding, item: CoffeeShop, position: Int) {
         binding.item = item
+        binding.actor = actor
     }
 }
 

@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,8 +25,13 @@ import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.common.AppNavigator
 import com.skinnydoo.coffeeloc8r.databinding.FragmentHomeBinding
+import com.skinnydoo.coffeeloc8r.ui.MainViewModel
 import com.skinnydoo.coffeeloc8r.ui.home.adapter.BottomSheetAdapter
+import com.skinnydoo.coffeeloc8r.ui.home.models.HomeAction
+import com.skinnydoo.coffeeloc8r.ui.home.models.HomeActor
 import com.skinnydoo.coffeeloc8r.utils.DividerItemDecorator
+import com.skinnydoo.coffeeloc8r.utils.event.EventObserver
+import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.extensions.showToast
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
@@ -45,7 +51,8 @@ class HomeFragment @Inject constructor(
     private val settingsClient: SettingsClient, // provide access to the Location Settings API
     private val locationSettingsRequest: LocationSettingsRequest, // Used to determine if the device has optimal location settings
     private val viewModelFactory: ViewModelProvider.Factory,
-    private val appNavigator: AppNavigator
+    private val appNavigator: AppNavigator,
+    private val actor: HomeActor
 ) : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private var _binding: FragmentHomeBinding? = null
@@ -55,8 +62,9 @@ class HomeFragment @Inject constructor(
     private val navController by lazy { findNavController() }
 
     private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
+    private val activityViewModel by activityViewModels<MainViewModel> { viewModelFactory }
 
-    private val bottomSheetAdapter by lazy { BottomSheetAdapter(appExecutors) }
+    private val bottomSheetAdapter by lazy { BottomSheetAdapter(appExecutors, actor) }
 
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationCallbackStrongRef: LocationCallback
@@ -185,6 +193,17 @@ class HomeFragment @Inject constructor(
                 bottomSheetAdapter.submitList(it)
             }
         })
+
+        activityViewModel.homeActions.observe(viewLifecycleOwner, EventObserver(::onHomeAction))
+    }
+
+    private fun onHomeAction(action: HomeAction) {
+        when (action) {
+            is HomeAction.ShowCoffeeShopDetails -> {
+                Timber.d("Clicked ${action.shop}")
+                navController.navigate(HomeFragmentDirections.toShopDetails())
+            }
+        }.exhaustive
     }
 
 

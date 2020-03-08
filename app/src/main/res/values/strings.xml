@@ -19,8 +19,13 @@
 
     <!--Image Content Description-->
     <string name="content_description_coffee_cup_ic">Coffee cup icon</string>
+    <string name="content_description_ic_back">Toolbar back icon</string>
+    <string name="content_description_shop_image">Shop Image</string>
 
     <!--Home screen-->
     <string name="coffee_shop_status_open">Open</string>
     <string name="coffee_shop_status_closed">Closed</string>
+
+    <!--Details screen-->
+    <string name="details_open_website">Open Website</string>
 </resources>

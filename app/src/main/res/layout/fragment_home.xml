@@ -15,10 +15,26 @@
         android:layout_height="match_parent"
         tools:context="com.skinnydoo.coffeeloc8r.ui.home.HomeFragment">
 
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/white"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <include
+                android:id="@+id/toolbar_include"
+                layout="@layout/toolbar_home" />
+        </com.google.android.material.appbar.AppBarLayout>
+
         <com.google.android.gms.maps.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            />
+
 
         <LinearLayout
             android:id="@+id/bottom_sheet"

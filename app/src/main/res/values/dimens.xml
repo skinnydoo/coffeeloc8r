@@ -57,10 +57,12 @@
     <dimen name="dot_pager_indicator_size">6dp</dimen>
 
     <dimen name="elevation_default">4dp</dimen>
+    <dimen name="elevation_5dp">5dp</dimen>
     <dimen name="elevation_small">2dp</dimen>
     <dimen name="tab_indicator_height">4dp</dimen>
 
     <dimen name="bottom_sheet_height">300dp</dimen>
+    <dimen name="app_bar_height">250dp</dimen>
 
     <!-- radius -->
     <dimen name="corner_radius_5">5dp</dimen>
