@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DescriptionItem" />
+    </data>
+
+    <TextView
+        android:id="@+id/shop_description_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:layout_marginTop="@dimen/spacing_large_36"
+        android:fontFamily="@font/circularstd_book"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.1"
+        android:maxLines="8"
+        android:padding="@dimen/spacing_normal"
+        android:text="@{item.description}"
+        android:textColor="@color/grey_500"
+        tools:text="@tools:sample/lorem/random[13]" />
+
+</layout>

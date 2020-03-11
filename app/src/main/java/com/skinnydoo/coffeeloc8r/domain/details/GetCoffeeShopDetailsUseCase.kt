@@ -3,6 +3,7 @@ package com.skinnydoo.coffeeloc8r.domain.details
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.domain.CoroutinesDispatcherProvider
 import com.skinnydoo.coffeeloc8r.domain.UseCase
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShopHours
 import com.skinnydoo.coffeeloc8r.ui.details.models.*
 import com.skinnydoo.coffeeloc8r.utils.network.Result
 import kotlinx.coroutines.delay
@@ -54,7 +55,52 @@ class GetCoffeeShopDetailsUseCase @Inject constructor(
                 addressDetails = "5th Ave to Central Park West"
             )
 
-            val items = listOf(mapItem) + contactItems
+            val description = DescriptionItem(
+                id = UUID.randomUUID().toString(),
+                description = "Central Park is the 843-acre green heart of Manhattan and is maintained by the Central Park Conservancy. It was designed in the 19th century by Frederick Law Olmsted and Calvert Vaux as an urban escape for New Yorkers, and now receives over 40 million visits per year."
+            )
+
+            val hours = listOf(
+                CoffeeShopHours(
+                    id = UUID.randomUUID().toString(),
+                    day = 1,
+                    opening = "8h00",
+                    closing = "21h00",
+                    open = true
+                ),
+
+                CoffeeShopHours(
+                    id = UUID.randomUUID().toString(),
+                    day = 2,
+                    opening = "8h00",
+                    closing = "21h00",
+                    open = true
+                ),
+
+                CoffeeShopHours(
+                    id = UUID.randomUUID().toString(),
+                    day = 3,
+                    opening = "8h00",
+                    closing = "21h00",
+                    open = true
+                ),
+
+                CoffeeShopHours(
+                    id = UUID.randomUUID().toString(),
+                    day = 4,
+                    opening = "8h00",
+                    closing = "21h00",
+                    open = true
+                )
+            )
+
+            val hoursItem = HoursItem(
+                id = UUID.randomUUID().toString(),
+                hours = hours,
+                open = true,
+                closing = "22h00"
+            )
+            val items = listOf(description) + mapItem + hoursItem + contactItems
 
             Result.Success(items)
         }

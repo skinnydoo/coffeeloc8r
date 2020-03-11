@@ -14,6 +14,11 @@
     <string name="error_something_went_wrong">Something went wrong!</string>
     <string name="error_connectivity">Please verify your connection and try again.</string>
 
+    <!--Formatting-->
+    <string name="opening_time_format" translatable="false">%1$s - %2$s</string>
+    <string name="opening_double_time_format" translatable="false">%1$s - %2$s; %3$s - %4$s</string>
+    <string name="distance_format_km" translatable="false">%.1fkm</string>
+
     <!--Dialogs-->
     <string name="dialog_error_title">Error!</string>
     <string name="dialog_action_dont_allow">Don’t Allow</string>
@@ -31,4 +36,6 @@
     <!--Details screen-->
     <string name="details_open_website">Open Website</string>
     <string name="details_powered_by">Powered by</string>
+    <string name="details_closes_at">Closes at</string>
+    <string name="details_see_opening_hours">See opening hours</string>
 </resources>

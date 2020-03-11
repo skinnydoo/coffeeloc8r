@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.skinnydoo.coffeeloc8r.utils.DateUtils" />
+
+        <variable
+            name="item"
+            type="com.skinnydoo.coffeeloc8r.domain.models.CoffeeShopHours" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/day_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:fontFamily="@font/circularstd_book"
+            android:text="@{DateUtils.dayOfWeekAsText(item.day)}"
+            android:textColor="@color/text_color_grey_dark"
+            android:textSize="@dimen/font_default"
+            app:layout_constraintEnd_toStartOf="@id/hour_tv"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Sunday" />
+
+        <TextView
+            android:id="@+id/hour_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/circularstd_book"
+            android:text="@{item.open ? @string/opening_time_format(item.opening, item.closing): @string/coffee_shop_status_closed}"
+            android:textColor="@color/text_color_grey_dark"
+            app:layout_constraintBottom_toBottomOf="@id/day_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/day_tv"
+            app:layout_constraintTop_toTopOf="@id/day_tv"
+            tools:text="6h00 - 23h00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -59,7 +59,7 @@
             android:clipToPadding="false"
             android:orientation="vertical"
             app:visibleUnless="@{vm.viewState.showProgress}"
-            android:paddingBottom="@dimen/spacing_huge_56"
+            android:paddingBottom="@dimen/spacing_normal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
@@ -80,7 +80,7 @@
             app:srcCompat="@drawable/coffee_cup_50x71" />
 
 
-        <com.google.android.material.button.MaterialButton
+       <!-- <com.google.android.material.button.MaterialButton
             android:id="@+id/details_open_website_btn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/spacing_huge_56"
@@ -98,7 +98,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/font_medium"
             app:cornerRadius="@dimen/no_spacing"
-            app:rippleColor="@color/ripple_light" />
+            app:rippleColor="@color/ripple_light" />-->
 
         <include
             layout="@layout/view_loading"

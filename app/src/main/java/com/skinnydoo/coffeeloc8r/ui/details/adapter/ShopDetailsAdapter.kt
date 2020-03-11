@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.common.BaseViewHolder
 import com.skinnydoo.coffeeloc8r.ui.details.models.ShopDetailsItem
@@ -17,6 +18,7 @@ class ShopDetailsAdapter(
         .setBackgroundThreadExecutor(appExecutors.diskIO)
         .build()
 ) {
+    private val viewPool = RecyclerView.RecycledViewPool() // viewPool for child recyclers
 
     init {
         setHasStableIds(true)
@@ -27,7 +29,12 @@ class ShopDetailsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<ShopDetailsItem> {
-        return typeFactory.holder(parent, viewType, appExecutors) as BaseViewHolder<ShopDetailsItem>
+        return typeFactory.holder(
+            parent,
+            viewType,
+            appExecutors,
+            viewPool
+        ) as BaseViewHolder<ShopDetailsItem>
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<ShopDetailsItem>, position: Int) {
