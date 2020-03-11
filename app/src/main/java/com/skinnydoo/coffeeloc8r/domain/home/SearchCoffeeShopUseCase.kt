@@ -2,6 +2,7 @@ package com.skinnydoo.coffeeloc8r.domain.home
 
 import com.skinnydoo.coffeeloc8r.domain.CoroutinesDispatcherProvider
 import com.skinnydoo.coffeeloc8r.domain.UseCase
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
 import com.skinnydoo.coffeeloc8r.utils.network.Result
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

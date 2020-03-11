@@ -11,6 +11,8 @@ import com.skinnydoo.coffeeloc8r.di.scope.PerActivity
 import com.skinnydoo.coffeeloc8r.ui.base.BaseActivityModule
 import com.skinnydoo.coffeeloc8r.ui.details.ShopDetailsFragment
 import com.skinnydoo.coffeeloc8r.ui.details.ShopDetailsViewModel
+import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactory
+import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactoryImpl
 import com.skinnydoo.coffeeloc8r.ui.home.HomeFragment
 import com.skinnydoo.coffeeloc8r.ui.home.HomeViewModel
 import com.skinnydoo.coffeeloc8r.ui.home.PermissionFragment
@@ -54,6 +56,10 @@ abstract class MainModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+
+    @Binds
+    @PerActivity
+    abstract fun bindDetailsViewTypeFactory(factory: DetailsViewTypeFactoryImpl): DetailsViewTypeFactory
 
 
     @Binds

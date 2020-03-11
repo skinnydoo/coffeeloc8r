@@ -9,7 +9,7 @@
 
         <variable
             name="item"
-            type="com.skinnydoo.coffeeloc8r.domain.home.CoffeeShop" />
+            type="com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop" />
 
         <variable
             name="actor"
@@ -55,14 +55,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/status_container"
             app:layout_constraintStart_toEndOf="@id/coffee_cup_ic"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Tim Hortons" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/status_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="@dimen/no_spacing"
+            app:layout_constraintHorizontal_weight=".4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/coffee_shop_name_tv"
@@ -71,42 +72,62 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/coffee_shop_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/MaterialButtonContainedStyle"
                 android:backgroundTint="@{item.open ? @color/red: @color/brown}"
+                android:layout_width="@dimen/no_spacing"
                 android:clickable="false"
                 android:elevation="@dimen/no_spacing"
                 android:focusable="false"
                 android:fontFamily="@font/circularstd_bold"
-                android:insetLeft="@dimen/no_spacing"
-                android:insetTop="@dimen/no_spacing"
-                android:insetRight="@dimen/no_spacing"
-                android:insetBottom="@dimen/no_spacing"
-                android:minWidth="@dimen/no_spacing"
-                android:minHeight="@dimen/no_spacing"
                 android:paddingTop="@dimen/spacing_small"
-                android:includeFontPadding="false"
                 android:paddingBottom="@dimen/spacing_small"
                 android:text="@{item.open ? @string/coffee_shop_status_open : @string/coffee_shop_status_closed}"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                tools:backgroundTint="@color/red"
+                app:layout_constraintBottom_toTopOf="@id/coffee_shop_distance_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:text="Closed" />
 
 
             <TextView
                 android:id="@+id/coffee_shop_distance_tv"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_tiny"
+                android:layout_marginEnd="@dimen/spacing_tiny"
                 android:fontFamily="@font/circularstd_book"
                 android:gravity="center"
                 android:text="@{StringUtils.formattedDistance(item.distance)}"
                 android:textColor="?attr/colorAccent"
                 android:textSize="@dimen/font_default"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/coffee_shop_status"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintEnd_toStartOf="@id/coffee_shop_rating_btn"
                 tools:text="3km" />
 
-        </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/coffee_shop_rating_btn"
+                style="@style/MaterialButtonOutlinedStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:elevation="@dimen/no_spacing"
+                android:focusable="false"
+                android:padding="@dimen/spacing_tiny"
+                app:layout_constraintStart_toEndOf="@id/coffee_shop_distance_tv"
+                app:layout_constraintBottom_toBottomOf="@id/coffee_shop_distance_tv"
+                app:layout_constraintTop_toTopOf="@id/coffee_shop_distance_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/spacing_tinier"
+                app:strokeColor="#73CF42"
+                android:text="8.3"
+                android:textColor="#73CF42" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

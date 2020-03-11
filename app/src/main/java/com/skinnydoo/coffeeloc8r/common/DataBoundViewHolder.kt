@@ -1,4 +1,4 @@
-package com.skinnydoo.coffeeloc8r.ui.adapter
+package com.skinnydoo.coffeeloc8r.common
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

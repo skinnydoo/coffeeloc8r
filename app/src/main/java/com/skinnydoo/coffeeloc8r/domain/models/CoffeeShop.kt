@@ -1,4 +1,4 @@
-package com.skinnydoo.coffeeloc8r.domain.home
+package com.skinnydoo.coffeeloc8r.domain.models
 
 data class CoffeeShop(
     val id: String,

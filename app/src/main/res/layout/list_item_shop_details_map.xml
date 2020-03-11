@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.MapItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_large">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_view"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="@dimen/no_spacing"
+            app:layout_constraintBottom_toTopOf="@id/action_bar_container"
+            app:layout_constraintDimensionRatio="H,4:2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            map:liteMode="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/action_bar_container"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="@dimen/spacing_huge_56"
+            android:background="@color/white_ish"
+            app:layout_constraintBottom_toTopOf="@id/address_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/map_view">
+
+            <ImageButton
+                android:id="@+id/favorite_btn"
+                android:layout_width="@dimen/no_spacing"
+                android:layout_height="@dimen/no_spacing"
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/share_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_favorite_36"
+                tools:ignore="UnusedAttribute" />
+
+
+            <ImageButton
+                android:id="@+id/share_btn"
+                android:layout_width="@dimen/no_spacing"
+                android:layout_height="@dimen/no_spacing"
+                android:background="@color/transparent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/favorite_btn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_share_36"
+                tools:ignore="UnusedAttribute" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/address_tv"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:fontFamily="@font/circularstd_medium"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:textColor="@color/text_color_grey_dark"
+            android:text="@{item.address}"
+            android:textSize="@dimen/font_normal"
+            app:layout_constraintBottom_toTopOf="@id/address_details_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/action_bar_container"
+            tools:text="Grand Hamad Street" />
+
+        <TextView
+            android:id="@+id/address_details_tv"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/circularstd_book"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:text="@{item.addressDetails}"
+            android:textColor="@color/text_color_grey_light"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:textSize="@dimen/font_default"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_tv"
+            tools:text="4th floor of the mall" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

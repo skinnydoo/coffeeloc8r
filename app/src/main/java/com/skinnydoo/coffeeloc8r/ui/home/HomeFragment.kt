@@ -30,6 +30,7 @@ import com.skinnydoo.coffeeloc8r.ui.home.adapter.BottomSheetAdapter
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeAction
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeActor
 import com.skinnydoo.coffeeloc8r.utils.DividerItemDecorator
+import com.skinnydoo.coffeeloc8r.utils.OnMapAndViewReadyListener
 import com.skinnydoo.coffeeloc8r.utils.event.EventObserver
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.extensions.showToast
@@ -137,11 +138,6 @@ class HomeFragment @Inject constructor(
         binding.mapView.onLowMemory()
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap ?: return // return early if map was not initialized properly
         Timber.d("Map is ready...making initial setup")
@@ -175,7 +171,10 @@ class HomeFragment @Inject constructor(
         binding.mapView.run {
             isHapticFeedbackEnabled = true
             onCreate(savedInstanceState)
-            OnMapAndViewReadyListener(this, this@HomeFragment)
+            OnMapAndViewReadyListener(
+                this,
+                this@HomeFragment
+            )
         }
     }
 

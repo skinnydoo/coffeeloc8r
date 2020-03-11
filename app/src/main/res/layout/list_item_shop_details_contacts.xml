@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.ContactItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/guideline_vertical_56" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/website_tv"
+            style="@style/MaterialButtonTextStyle"
+            android:layout_width="@dimen/no_spacing"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/circularstd_book"
+            android:gravity="start|center"
+            android:maxLines="1"
+            android:padding="@dimen/spacing_small"
+            android:paddingStart="@dimen/no_spacing"
+            android:paddingEnd="@dimen/spacing_small"
+            android:text="@{item.text}"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_normal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="https://www.timhortons.com" />
+
+        <ImageView
+            android:id="@+id/link_ic_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_circle_24"
+            app:drawableRes="@{item.type.icon}"
+            app:layout_constraintBottom_toBottomOf="@id/website_tv"
+            app:layout_constraintEnd_toStartOf="@id/guideline_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/website_tv"
+            tools:src="@drawable/ic_link_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

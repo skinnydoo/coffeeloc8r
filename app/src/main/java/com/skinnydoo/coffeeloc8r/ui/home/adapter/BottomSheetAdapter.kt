@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.databinding.ListItemBottomSheetBinding
-import com.skinnydoo.coffeeloc8r.domain.home.CoffeeShop
-import com.skinnydoo.coffeeloc8r.ui.adapter.DataBoundListAdapter
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
+import com.skinnydoo.coffeeloc8r.common.DataBoundListAdapter
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeActor
 import com.skinnydoo.coffeeloc8r.utils.extensions.bind
 

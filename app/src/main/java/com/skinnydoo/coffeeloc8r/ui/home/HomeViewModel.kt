@@ -3,7 +3,7 @@ package com.skinnydoo.coffeeloc8r.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skinnydoo.coffeeloc8r.domain.home.CoffeeShop
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
 import com.skinnydoo.coffeeloc8r.domain.home.SearchCoffeeShopUseCase
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeViewState
 import com.skinnydoo.coffeeloc8r.utils.event.Event

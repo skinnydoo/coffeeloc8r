@@ -1,4 +1,4 @@
-package com.skinnydoo.coffeeloc8r.ui.home
+package com.skinnydoo.coffeeloc8r.utils
 
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import com.google.android.gms.maps.GoogleMap
