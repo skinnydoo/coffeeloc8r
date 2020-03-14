@@ -11,9 +11,21 @@ data class CoffeeShopDto(
     val rating: Double?,
     val ratingColor: String?,
     val location: Location,
-    val hours: Hours?
+    val hours: Hours?,
+    @SerializedName("canonicalUrl")
+    val foursquareUrl: String?,
+    val url: String?,
+    val description: String?,
+    val bestPhoto: Photo
 )
 
+@Keep
+data class Contact(
+    val formattedPhone: String?,
+    val twitter: String?,
+    val instagram: String?,
+    val facebookUsername: String?
+)
 
 @Keep
 data class Location(
@@ -36,11 +48,22 @@ data class Hours(
     val isOpen: Boolean
 )
 
-fun CoffeeShopDto.toCoffeeShop(distance: Double): CoffeeShop = CoffeeShop(
+@Keep
+data class Photo(
+    val id: String,
+    val prefix: String,
+    val suffix: String,
+    val width: Int,
+    val height: Int
+)
+
+fun CoffeeShopDto.toCoffeeShop(): CoffeeShop = CoffeeShop(
     id,
     name = name,
     rating = rating?.toString(),
     ratingColor = ratingColor,
-    distance = distance.times(0.001),
+    lat = location.lat ?: 0.0,
+    lon = location.lon ?: 0.0,
+    distance = location.distance?.times(0.001) ?: 0.0,
     open = hours?.isOpen ?: false
 )

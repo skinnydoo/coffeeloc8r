@@ -5,6 +5,8 @@ data class CoffeeShop(
     val name: String,
     val rating: String?,
     val ratingColor: String?,
+    val lat: Double,
+    val lon: Double,
     val distance: Double,
     val open: Boolean
 )

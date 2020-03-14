@@ -1,13 +1,12 @@
 package com.skinnydoo.coffeeloc8r.domain.details
 
-import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.data.CoffeeShopRepository
 import com.skinnydoo.coffeeloc8r.domain.CoroutinesDispatcherProvider
 import com.skinnydoo.coffeeloc8r.domain.UseCase
-import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShopHours
-import com.skinnydoo.coffeeloc8r.ui.details.models.*
+import com.skinnydoo.coffeeloc8r.ui.details.models.DescriptionItem
+import com.skinnydoo.coffeeloc8r.ui.details.models.ShopDetailsItem
+import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.network.Result
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
@@ -15,12 +14,24 @@ import javax.inject.Inject
 class GetCoffeeShopDetailsUseCase @Inject constructor(
     private val repository: CoffeeShopRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
-) : UseCase<Unit, List<ShopDetailsItem>> {
+) : UseCase<GetCoffeeShopDetailsUseCase.Request, List<ShopDetailsItem>> {
 
-    override suspend fun invoke(req: Unit): Result<List<ShopDetailsItem>> {
+    override suspend fun invoke(req: Request): Result<List<ShopDetailsItem>> {
         return withContext(dispatcherProvider.io) {
+            when (val result = repository.getVenue(req.venueId)) {
+                is Result.Success -> {
+                    val shop = result.data.response.coffeeShop
+                    val descriptionItem =
+                        DescriptionItem(UUID.randomUUID().toString(), shop.description)
 
-            // simulate network request
+
+                    val items = listOf(descriptionItem)
+                    Result.Success(items)
+                }
+                is Result.Error -> result
+            }.exhaustive
+
+            /*// simulate network request
             delay(500)
 
             // contact
@@ -105,7 +116,7 @@ class GetCoffeeShopDetailsUseCase @Inject constructor(
             )
             val items = listOf(description) + mapItem + hoursItem + contactItems
 
-            Result.Success(items)
+            Result.Success(items)*/
         }
     }
 

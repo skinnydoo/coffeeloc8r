@@ -34,7 +34,7 @@ data class MapItem(
 
 data class DescriptionItem(
     val id: String,
-    val description: String
+    val description: String?
 ) : ShopDetailsItem() {
     override fun isTheSame(other: Differentiable): Boolean = (id == (other as? DescriptionItem)?.id)
     override fun type(typeFactory: DetailsViewTypeFactory): Int = typeFactory.type(this)

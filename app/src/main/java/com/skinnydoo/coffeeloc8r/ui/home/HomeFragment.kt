@@ -19,13 +19,16 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.common.AppNavigator
 import com.skinnydoo.coffeeloc8r.databinding.FragmentHomeBinding
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
 import com.skinnydoo.coffeeloc8r.ui.MainViewModel
 import com.skinnydoo.coffeeloc8r.ui.home.adapter.BottomSheetAdapter
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeAction
@@ -46,8 +49,10 @@ private const val DEFAULT_ZOOM = 11f // city level
 // constant used in the location settings dialog
 private const val REQUEST_CHECK_SETTINGS = 101
 
-private const val KEY_CAMERA_POSITION = "camera_position";
-private const val KEY_LOCATION = "location";
+private const val KEY_CAMERA_POSITION = "camera_position"
+private const val KEY_LOCATION = "location"
+private const val KEY_LOCATION_LAT = "location_lat"
+private const val KEY_LOCATION_LON = "location_lon"
 
 class HomeFragment @Inject constructor(
     appExecutors: AppExecutors,
@@ -77,6 +82,8 @@ class HomeFragment @Inject constructor(
     private var map: GoogleMap? = null
     private var currentLocation: Location? = null
     private val coffeeMarkers = hashMapOf<String, Marker>()
+    private val shops = mutableListOf<CoffeeShop>()
+    private var firstDataLoad = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,14 +135,24 @@ class HomeFragment @Inject constructor(
     }
 
     override fun onDestroyView() {
+        clearResources()
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    private fun clearResources() {
         map?.clear()
+        map?.mapType = GoogleMap.MAP_TYPE_NONE
+        shops.clear()
+        coffeeMarkers.clear()
         binding.mapView.onDestroy()
         binding.bottomSheetRecycler.adapter = null
         _binding = null
         map = null
-        super.onDestroyView()
     }
-
 
     override fun onLowMemory() {
         super.onLowMemory()
@@ -147,10 +164,13 @@ class HomeFragment @Inject constructor(
         Timber.d("Map is ready...making initial setup")
         map?.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
-            isMyLocationEnabled = false
-            uiSettings.isMyLocationButtonEnabled = false
-            uiSettings.isMapToolbarEnabled = false
+
+            if (PermissionFragment.hasPermission(requireContext())) {
+                isMyLocationEnabled = true
+                uiSettings.isMyLocationButtonEnabled = true
+            }
         }
+        shops.forEach(this::addCoffeeShopOnMap)
     }
 
     private fun initView(savedInstanceState: Bundle?) {
@@ -193,17 +213,40 @@ class HomeFragment @Inject constructor(
                 requireContext().showToast(it)
             }
 
-            viewState.shops?.let { bottomSheetAdapter.submitList(it) }
+            viewState.shops?.let {
+                map?.clear()
+                shops.clear()
+
+                it.forEach(::addCoffeeShopOnMap)
+                shops.addAll(it)
+                bottomSheetAdapter.submitList(it)
+            }
         })
 
         activityViewModel.homeActions.observe(viewLifecycleOwner, EventObserver(::onHomeAction))
+    }
+
+    private fun addCoffeeShopOnMap(shop: CoffeeShop) {
+        val map = map ?: return
+        with(map) {
+            val latLng = LatLng(shop.lat, shop.lon)
+
+            val marker = addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .draggable(false)
+                    .title(shop.name)
+            )
+            marker.tag = shop
+            coffeeMarkers[shop.id] = marker
+        }
     }
 
     private fun onHomeAction(action: HomeAction) {
         when (action) {
             is HomeAction.ShowCoffeeShopDetails -> {
                 Timber.d("Clicked ${action.shop}")
-                navController.navigate(HomeFragmentDirections.toShopDetails())
+                navController.navigate(HomeFragmentDirections.toShopDetails(action.shop.id))
             }
         }.exhaustive
     }
@@ -220,7 +263,6 @@ class HomeFragment @Inject constructor(
                 }
             }
         }
-
         locationCallback = LocationCallBackRef(locationCallbackStrongRef)
     }
 
@@ -228,10 +270,22 @@ class HomeFragment @Inject constructor(
         val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
         Timber.d("Location update received: $location. Time: $time")
         currentLocation = location
-        if (location != null) {
-            loadCoffeeShop(location)
+        currentLocation?.let {
+            centerMapAroundLocation(it)
+            if (firstDataLoad) {
+                loadCoffeeShop(it)
+                firstDataLoad = false
+            }
         }
+    }
 
+    private fun centerMapAroundLocation(location: Location) {
+        map?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(location.latitude, location.longitude),
+                DEFAULT_ZOOM
+            )
+        )
     }
 
     private fun loadCoffeeShop(location: Location) {

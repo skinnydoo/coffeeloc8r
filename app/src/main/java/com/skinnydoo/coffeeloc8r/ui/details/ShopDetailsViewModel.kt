@@ -3,6 +3,7 @@ package com.skinnydoo.coffeeloc8r.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.domain.details.GetCoffeeShopDetailsUseCase
 import com.skinnydoo.coffeeloc8r.ui.details.models.ShopDetailsItem
 import com.skinnydoo.coffeeloc8r.ui.details.models.ShopDetailsViewState
@@ -25,9 +26,10 @@ class ShopDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             showLoading()
 
-            when (val result = getCoffeeShopDetails(Unit)) {
-                is Result.Success -> emitViewState(success = Event(result.data))
-                is Result.Error -> TODO()
+            val request = GetCoffeeShopDetailsUseCase.Request(shopId)
+            when (val result = getCoffeeShopDetails(request)) {
+                is Result.Success -> emitViewState(items = result.data)
+                is Result.Error -> emitViewState(error = Event(R.string.error_loading_data))
             }.exhaustive
         }
     }
@@ -39,9 +41,9 @@ class ShopDetailsViewModel @Inject constructor(
     private fun emitViewState(
         showProgress: Boolean = false,
         error: Event<Int>? = null,
-        success: Event<List<ShopDetailsItem>>? = null
+        items: List<ShopDetailsItem>? = null
     ) {
-        val newState = ShopDetailsViewState(showProgress, error, success)
+        val newState = ShopDetailsViewState(showProgress, error, items)
         if (viewState.value != newState) _viewState.value = newState
     }
 }

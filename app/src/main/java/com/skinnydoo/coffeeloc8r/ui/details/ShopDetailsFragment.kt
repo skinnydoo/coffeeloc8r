@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.databinding.FragmentShopDetailsBinding
 import com.skinnydoo.coffeeloc8r.ui.details.adapter.ShopDetailsAdapter
@@ -25,12 +26,13 @@ class ShopDetailsFragment @Inject constructor(
     private var _binding: FragmentShopDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private val navArgs by navArgs<ShopDetailsFragmentArgs>()
     private val viewModel by viewModels<ShopDetailsViewModel> { viewModelFactory }
     private val detailsAdapter by lazy { ShopDetailsAdapter(appExecutors, viewTypeFactory) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getShopDetails("")
+        viewModel.getShopDetails(navArgs.shopId)
     }
 
     override fun onCreateView(
@@ -64,7 +66,7 @@ class ShopDetailsFragment @Inject constructor(
 
             uiState.error?.takeIf { !it.consumed }?.consume()?.let { showToast(it) }
 
-            uiState.success?.takeIf { !it.consumed }?.consume()?.let {
+            uiState.items?.let {
                 detailsAdapter.submitList(it)
             }
         })
