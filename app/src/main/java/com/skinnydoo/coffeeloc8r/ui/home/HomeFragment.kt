@@ -20,6 +20,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
@@ -44,6 +45,9 @@ private const val DEFAULT_ZOOM = 11f // city level
 
 // constant used in the location settings dialog
 private const val REQUEST_CHECK_SETTINGS = 101
+
+private const val KEY_CAMERA_POSITION = "camera_position";
+private const val KEY_LOCATION = "location";
 
 class HomeFragment @Inject constructor(
     appExecutors: AppExecutors,
@@ -123,15 +127,15 @@ class HomeFragment @Inject constructor(
         binding.mapView.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        map?.clear()
         binding.mapView.onDestroy()
+        binding.bottomSheetRecycler.adapter = null
+        _binding = null
+        map = null
+        super.onDestroyView()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        binding.mapView.onSaveInstanceState(outState)
-    }
 
     override fun onLowMemory() {
         super.onLowMemory()
@@ -143,6 +147,7 @@ class HomeFragment @Inject constructor(
         Timber.d("Map is ready...making initial setup")
         map?.apply {
             mapType = GoogleMap.MAP_TYPE_NORMAL
+            isMyLocationEnabled = false
             uiSettings.isMyLocationButtonEnabled = false
             uiSettings.isMapToolbarEnabled = false
         }
@@ -188,9 +193,7 @@ class HomeFragment @Inject constructor(
                 requireContext().showToast(it)
             }
 
-            viewState.success?.takeIf { !it.consumed }?.consume()?.let {
-                bottomSheetAdapter.submitList(it)
-            }
+            viewState.shops?.let { bottomSheetAdapter.submitList(it) }
         })
 
         activityViewModel.homeActions.observe(viewLifecycleOwner, EventObserver(::onHomeAction))
@@ -225,6 +228,16 @@ class HomeFragment @Inject constructor(
         val time = LocalTime.now().format(DateTimeFormatter.ISO_LOCAL_TIME)
         Timber.d("Location update received: $location. Time: $time")
         currentLocation = location
+        if (location != null) {
+            loadCoffeeShop(location)
+        }
+
+    }
+
+    private fun loadCoffeeShop(location: Location) {
+        viewModel.searchCoffeeShop(
+            LatLng(location.latitude, location.longitude), location.accuracy.toDouble()
+        )
     }
 
     /**

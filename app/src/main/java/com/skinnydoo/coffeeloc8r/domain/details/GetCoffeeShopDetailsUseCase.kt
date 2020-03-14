@@ -1,6 +1,7 @@
 package com.skinnydoo.coffeeloc8r.domain.details
 
 import com.skinnydoo.coffeeloc8r.R
+import com.skinnydoo.coffeeloc8r.data.CoffeeShopRepository
 import com.skinnydoo.coffeeloc8r.domain.CoroutinesDispatcherProvider
 import com.skinnydoo.coffeeloc8r.domain.UseCase
 import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShopHours
@@ -12,11 +13,13 @@ import java.util.*
 import javax.inject.Inject
 
 class GetCoffeeShopDetailsUseCase @Inject constructor(
+    private val repository: CoffeeShopRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
 ) : UseCase<Unit, List<ShopDetailsItem>> {
 
     override suspend fun invoke(req: Unit): Result<List<ShopDetailsItem>> {
         return withContext(dispatcherProvider.io) {
+
             // simulate network request
             delay(500)
 

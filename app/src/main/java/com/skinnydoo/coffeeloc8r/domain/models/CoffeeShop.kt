@@ -3,7 +3,8 @@ package com.skinnydoo.coffeeloc8r.domain.models
 data class CoffeeShop(
     val id: String,
     val name: String,
-    val open: Boolean,
+    val rating: String?,
+    val ratingColor: String?,
     val distance: Double,
-    val isFavorite: Boolean = false
+    val open: Boolean
 )

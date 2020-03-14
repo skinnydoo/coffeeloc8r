@@ -3,8 +3,10 @@ package com.skinnydoo.coffeeloc8r.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
+import com.google.android.gms.maps.model.LatLng
+import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.domain.home.SearchCoffeeShopUseCase
+import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop
 import com.skinnydoo.coffeeloc8r.ui.home.models.HomeViewState
 import com.skinnydoo.coffeeloc8r.utils.event.Event
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
@@ -22,17 +24,14 @@ class HomeViewModel @Inject constructor(
         get() = _viewState
 
 
-    init {
-        searchCoffeeShop()
-    }
-
-    private fun searchCoffeeShop() {
+    fun searchCoffeeShop(latLng: LatLng, accuracy: Double) {
         viewModelScope.launch {
             showLoading()
 
-            when (val result = searchCoffeeShop(Unit)) {
-                is Result.Success -> emitViewState(success = Event(result.data))
-                is Result.Error -> TODO()
+            val request = SearchCoffeeShopUseCase.Request(latLng, accuracy)
+            when (val result = searchCoffeeShop(request)) {
+                is Result.Success -> emitViewState(shops = result.data)
+                is Result.Error -> emitViewState(error = Event(R.string.error_loading_data))
             }.exhaustive
         }
     }
@@ -44,9 +43,9 @@ class HomeViewModel @Inject constructor(
     private fun emitViewState(
         showProgress: Boolean = false,
         error: Event<Int>? = null,
-        success: Event<List<CoffeeShop>>? = null
+        shops: List<CoffeeShop>? = null
     ) {
-        val newState = HomeViewState(showProgress, error, success)
+        val newState = HomeViewState(showProgress, error, shops)
         if (viewState.value != newState) _viewState.value = newState
     }
 }

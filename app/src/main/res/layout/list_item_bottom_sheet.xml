@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/content_description_coffee_cup_ic"
-            app:drawable="@{item.favorite ? @drawable/ic_coffee_cup_green_24 : @drawable/ic_coffee_cup_red_24}"
+            app:drawable="@{@drawable/ic_coffee_cup_red_24}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/coffee_shop_name_tv"
             app:layout_constraintStart_toStartOf="parent"
@@ -55,15 +55,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/status_container"
             app:layout_constraintStart_toEndOf="@id/coffee_cup_ic"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Tim Hortons" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/status_container"
-            android:layout_width="@dimen/no_spacing"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/no_spacing"
-            app:layout_constraintHorizontal_weight=".4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/coffee_shop_name_tv"
@@ -74,7 +72,7 @@
                 android:id="@+id/coffee_shop_status"
                 style="@style/MaterialButtonContainedStyle"
                 android:backgroundTint="@{item.open ? @color/red: @color/brown}"
-                android:layout_width="@dimen/no_spacing"
+                android:layout_width="wrap_content"
                 android:clickable="false"
                 android:elevation="@dimen/no_spacing"
                 android:focusable="false"
@@ -105,11 +103,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/coffee_shop_status"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintEnd_toStartOf="@id/coffee_shop_rating_btn"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="3km" />
 
-            <com.google.android.material.button.MaterialButton
+            <!--<com.google.android.material.button.MaterialButton
                 android:id="@+id/coffee_shop_rating_btn"
                 style="@style/MaterialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
@@ -125,7 +122,7 @@
                 android:layout_marginEnd="@dimen/spacing_tinier"
                 app:strokeColor="#73CF42"
                 android:text="8.3"
-                android:textColor="#73CF42" />
+                android:textColor="#73CF42" />-->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -32,14 +32,14 @@ class LocationModule {
              * may receive them slower than requested. We may also receive update faster than
              * requested if other application are requesting location updates at a faster interval
              */
-            interval = UPDATE_INTERVAL_IN_MILLISECONDS
+            // interval = UPDATE_INTERVAL_IN_MILLISECONDS
 
             /**
              * Sets the fastest rate for active location updates. This interval is exact, and the
              * application will never receive update faster than this value
              */
-            fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            // fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
 
     @Singleton
