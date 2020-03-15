@@ -22,7 +22,7 @@ class CoffeeLoc8rApp : DaggerApplication() {
         }
         super.onCreate()
 
-        setUpFirebaseCrashlytics()
+       //setUpFirebaseCrashlytics()
         if (BuildConfig.DEBUG) Timber.plant(MyDebugTree())
         else Timber.plant(ReleaseTree())
 

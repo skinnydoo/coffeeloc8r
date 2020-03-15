@@ -33,7 +33,7 @@ class GetCoffeeShopDetailsUseCase @Inject constructor(
                         id = UUID.randomUUID().toString(),
                         lat = shop.location.lat ?: 0.0,
                         lon = shop.location.lon ?: 0.0,
-                        address = "${shop.location.address}, ${shop.location.city} ${shop.location.state}, ${shop.location.postalCode} ${shop.location.country}",
+                        address = shop.location.formattedAddress?.joinToString(),
                         addressDetails = shop.location.crossStreet
                     )
 

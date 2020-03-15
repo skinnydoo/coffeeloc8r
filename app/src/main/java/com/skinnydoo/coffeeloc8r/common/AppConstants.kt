@@ -7,6 +7,9 @@ object AppConstants {
   const val KEY_FOURSQUARE_CLIENT_ID = "client_id"
   const val KEY_FOURSQUARE_CLIENT_SECRET = "client_secret"
 
+  // Request
+  const val REQUEST_IMMEDIATE_UPDATE = 0x1A
+
   //Errors
   const val VIEW_TYPE_ERROR = "Invalid view type"
   const val VIEW_HOLDER_ERROR = "Unknown view holder"

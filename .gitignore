@@ -110,7 +110,7 @@ gen/
 out/
 
 # Google Services (e.g. APIs or Firebase)
-#google-services.json
+google-services.json
 
 
 # OS-specific files

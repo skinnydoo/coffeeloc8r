@@ -1,9 +1,10 @@
 package com.skinnydoo.coffeeloc8r.domain.models
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import kotlinx.android.parcel.Parcelize
 
-
+@Keep
 @Parcelize
 data class CoffeeShop(
     val id: String,
