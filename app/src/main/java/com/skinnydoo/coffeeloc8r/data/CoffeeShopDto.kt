@@ -12,11 +12,12 @@ data class CoffeeShopDto(
     val ratingColor: String?,
     val location: Location,
     val hours: Hours?,
+    val contact: Contact?,
     @SerializedName("canonicalUrl")
     val foursquareUrl: String?,
     val url: String?,
     val description: String?,
-    val bestPhoto: Photo
+    val bestPhoto: Photo?
 )
 
 @Keep

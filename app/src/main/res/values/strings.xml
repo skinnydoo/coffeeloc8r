@@ -39,4 +39,8 @@
     <string name="details_powered_by">Powered by</string>
     <string name="details_closes_at">Closes at</string>
     <string name="details_see_opening_hours">See opening hours</string>
+
+    <string name="powered_by_url">https://foursquare.com/</string>
+
+    <string name="share_title">Share the address!</string>
 </resources>

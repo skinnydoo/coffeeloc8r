@@ -1,6 +1,7 @@
 package com.skinnydoo.coffeeloc8r
 
 import android.os.StrictMode
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.skinnydoo.coffeeloc8r.di.DaggerAppComponent
 import com.skinnydoo.coffeeloc8r.utils.log.MyDebugTree
@@ -21,6 +22,7 @@ class CoffeeLoc8rApp : DaggerApplication() {
         }
         super.onCreate()
 
+        setUpFirebaseCrashlytics()
         if (BuildConfig.DEBUG) Timber.plant(MyDebugTree())
         else Timber.plant(ReleaseTree())
 
@@ -51,6 +53,10 @@ class CoffeeLoc8rApp : DaggerApplication() {
                 .penaltyDeath()
                 .build()
         )
+    }
+
+    private fun setUpFirebaseCrashlytics() {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
     }
 
 }

@@ -5,6 +5,14 @@
     <data>
 
         <variable
+            name="actor"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor" />
+
+        <variable
+            name="shop"
+            type="com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop" />
+
+        <variable
             name="vm"
             type="com.skinnydoo.coffeeloc8r.ui.details.ShopDetailsViewModel" />
     </data>
@@ -33,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/content_description_shop_image"
-                    android:scaleType="centerCrop"
+                    app:imageUrl="@{vm.viewState.success.imageUrl}"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7"
                     app:srcCompat="@drawable/place_holder_shop_image"
@@ -47,6 +55,8 @@
 
                 <include
                     android:id="@+id/toolbar_include"
+                    app:actor="@{actor}"
+                    app:shop="@{shop}"
                     layout="@layout/toolbar_details" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -65,6 +75,7 @@
 
 
         <ImageView
+            android:id="@+id/coffee_cup_ic"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_margin="@dimen/spacing_normal"
@@ -78,27 +89,6 @@
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom"
             app:srcCompat="@drawable/coffee_cup_50x71" />
-
-
-       <!-- <com.google.android.material.button.MaterialButton
-            android:id="@+id/details_open_website_btn"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_huge_56"
-            android:layout_gravity="bottom"
-            android:layout_margin="@dimen/no_spacing"
-            android:backgroundTint="@color/brown"
-            android:fontFamily="@font/circularstd_book"
-            android:insetLeft="@dimen/no_spacing"
-            android:insetTop="@dimen/no_spacing"
-            app:visibleUnless="@{vm.viewState.showProgress}"
-            android:insetRight="@dimen/no_spacing"
-            android:insetBottom="@dimen/no_spacing"
-            android:text="@string/details_open_website"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_medium"
-            app:cornerRadius="@dimen/no_spacing"
-            app:rippleColor="@color/ripple_light" />-->
 
         <include
             layout="@layout/view_loading"

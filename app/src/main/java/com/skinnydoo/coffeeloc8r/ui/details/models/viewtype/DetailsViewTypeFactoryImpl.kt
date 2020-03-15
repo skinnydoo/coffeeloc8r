@@ -13,7 +13,6 @@ import com.skinnydoo.coffeeloc8r.ui.details.adapter.CoffeeShopHoursAdapter
 import com.skinnydoo.coffeeloc8r.ui.details.models.*
 import com.skinnydoo.coffeeloc8r.ui.details.viewholder.*
 import com.skinnydoo.coffeeloc8r.utils.extensions.bind
-import com.skinnydoo.coffeeloc8r.utils.extensions.getLayoutInflater
 import javax.inject.Inject
 
 @PerActivity
@@ -30,25 +29,22 @@ class DetailsViewTypeFactoryImpl @Inject constructor() : DetailsViewTypeFactory 
         parent: ViewGroup,
         viewType: Int,
         appExecutors: AppExecutors,
-        viewPool: RecyclerView.RecycledViewPool
+        viewPool: RecyclerView.RecycledViewPool,
+        actor: DetailsActor
     ): BaseViewHolder<*> {
         return when (viewType) {
             R.layout.list_item_shop_details_contacts -> {
                 val binding = parent.bind<ListItemShopDetailsContactsBinding>(viewType)
-                ContactItemViewHolder(binding)
+                ContactItemViewHolder(binding, actor)
             }
             R.layout.list_item_shop_details_powered_by -> {
-                val binding = ListItemShopDetailsPoweredByBinding.inflate(
-                    parent.getLayoutInflater(),
-                    parent,
-                    false
-                )
-                PoweredByItemViewHolder(binding)
+                val binding = parent.bind<ListItemShopDetailsPoweredByBinding>(viewType)
+                PoweredByItemViewHolder(binding, actor)
 
             }
             R.layout.list_item_shop_details_map -> {
                 val binding = parent.bind<ListItemShopDetailsMapBinding>(viewType)
-                MapItemViewHolder(binding)
+                MapItemViewHolder(binding, actor)
             }
             R.layout.list_item_shop_details_description -> {
                 val binding = parent.bind<ListItemShopDetailsDescriptionBinding>(viewType)

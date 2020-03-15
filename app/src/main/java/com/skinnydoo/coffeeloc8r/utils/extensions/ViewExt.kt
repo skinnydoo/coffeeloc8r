@@ -15,9 +15,12 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.appbar.AppBarLayout
 import com.skinnydoo.coffeeloc8r.glide.GlideApp
 import com.skinnydoo.coffeeloc8r.glide.roundedCorners
+import com.skinnydoo.coffeeloc8r.utils.AppBarState
 import com.skinnydoo.coffeeloc8r.utils.SingleClickListener
+import kotlin.math.abs
 
 
 /**
@@ -225,6 +228,35 @@ inline fun ViewPropertyAnimator.setListener(
 
     override fun onAnimationEnd(animation: Animator) {
         animationEnd(animation)
+    }
+})
+
+inline fun AppBarLayout.addOnOffsetChangedListener(
+    crossinline stateChanged: (appBarLayout: AppBarLayout, state: AppBarState) -> Unit
+) = addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+    private var currentState = AppBarState.IDLE
+
+    override fun onOffsetChanged(appBarLayout: AppBarLayout, verticalOffset: Int) {
+        when {
+            verticalOffset == 0 -> {
+                if (currentState != AppBarState.EXPANDED) {
+                    stateChanged(appBarLayout, AppBarState.EXPANDED)
+                }
+                currentState = AppBarState.EXPANDED
+            }
+            abs(verticalOffset) >= appBarLayout.totalScrollRange -> {
+                if (currentState != AppBarState.COLLAPSED) {
+                    stateChanged(appBarLayout, AppBarState.COLLAPSED)
+                }
+                currentState = AppBarState.COLLAPSED
+            }
+            else -> {
+                if (currentState != AppBarState.IDLE) {
+                    stateChanged(appBarLayout, AppBarState.IDLE)
+                }
+                currentState = AppBarState.IDLE
+            }
+        }
     }
 })
 

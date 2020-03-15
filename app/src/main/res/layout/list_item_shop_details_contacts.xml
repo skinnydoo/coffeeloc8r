@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="actor"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor" />
+
+        <variable
             name="item"
             type="com.skinnydoo.coffeeloc8r.ui.details.models.ContactItem" />
     </data>
@@ -29,6 +33,7 @@
             android:ellipsize="end"
             android:fontFamily="@font/circularstd_book"
             android:gravity="start|center"
+            android:onClick="@{() -> actor.contactClicked(item)}"
             android:maxLines="1"
             android:padding="@dimen/spacing_small"
             android:paddingStart="@dimen/no_spacing"

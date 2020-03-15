@@ -5,5 +5,7 @@ import com.skinnydoo.coffeeloc8r.utils.event.Event
 data class ShopDetailsViewState(
     val showProgress: Boolean,
     val error: Event<Int>?,
-    val items: List<ShopDetailsItem>?
+    val success: ShopDetailsViewStateResult?
 )
+
+data class ShopDetailsViewStateResult(val imageUrl: String?, val items: List<ShopDetailsItem>)

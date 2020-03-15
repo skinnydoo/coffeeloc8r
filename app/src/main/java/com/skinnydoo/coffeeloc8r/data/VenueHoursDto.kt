@@ -8,7 +8,7 @@ import java.util.*
 data class VenueHoursDto(
     val id: String = UUID.randomUUID().toString(),
     @SerializedName("timeframes")
-    val timeFrames: List<TimeFrames>
+    val timeFrames: List<TimeFrames>?
 
 )
 

@@ -7,6 +7,10 @@
     <data>
 
         <variable
+            name="actor"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor" />
+
+        <variable
             name="item"
             type="com.skinnydoo.coffeeloc8r.ui.details.models.MapItem" />
     </data>
@@ -44,6 +48,7 @@
                 android:background="@color/transparent"
                 android:clickable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/share_btn"
@@ -60,6 +65,7 @@
                 android:background="@color/transparent"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="@{() -> actor.shareIconClicked(item.address)}"
                 android:foreground="?attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

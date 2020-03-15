@@ -5,22 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.databinding.FragmentShopDetailsBinding
+import com.skinnydoo.coffeeloc8r.ui.MainViewModel
 import com.skinnydoo.coffeeloc8r.ui.details.adapter.ShopDetailsAdapter
+import com.skinnydoo.coffeeloc8r.ui.details.models.DetailsAction
+import com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor
 import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactory
-import com.skinnydoo.coffeeloc8r.utils.extensions.showToast
+import com.skinnydoo.coffeeloc8r.utils.AppBarState
+import com.skinnydoo.coffeeloc8r.utils.event.EventObserver
+import com.skinnydoo.coffeeloc8r.utils.extensions.*
 import javax.inject.Inject
 
 
 class ShopDetailsFragment @Inject constructor(
     private val viewModelFactory: ViewModelProvider.Factory,
     viewTypeFactory: DetailsViewTypeFactory,
-    appExecutors: AppExecutors
+    appExecutors: AppExecutors,
+    private val actor: DetailsActor
 ) : Fragment() {
 
     private var _binding: FragmentShopDetailsBinding? = null
@@ -28,11 +36,12 @@ class ShopDetailsFragment @Inject constructor(
 
     private val navArgs by navArgs<ShopDetailsFragmentArgs>()
     private val viewModel by viewModels<ShopDetailsViewModel> { viewModelFactory }
-    private val detailsAdapter by lazy { ShopDetailsAdapter(appExecutors, viewTypeFactory) }
+    private val activityViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val detailsAdapter by lazy { ShopDetailsAdapter(appExecutors, viewTypeFactory, actor) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.getShopDetails(navArgs.shopId)
+        viewModel.getShopDetails(navArgs.shop.id)
     }
 
     override fun onCreateView(
@@ -47,17 +56,43 @@ class ShopDetailsFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.vm = viewModel
+        binding.shop = navArgs.shop
+        binding.actor = actor
         observeViewModel()
         initView()
     }
 
 
     private fun initView() {
+        setupCollapsingToolbar()
         setupRecycler()
     }
 
     private fun setupRecycler() {
         binding.detailsRecycler.adapter = detailsAdapter
+    }
+
+    private fun setupCollapsingToolbar() {
+        binding.appBar.addOnOffsetChangedListener(stateChanged = { _, state ->
+            when (state) {
+                AppBarState.COLLAPSED -> {
+                    binding.coffeeCupIc.animate()
+                        .alpha(0f)
+                        .setDuration(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+                        .setListener(animationEnd = {
+                            binding.coffeeCupIc.remove()
+                        })
+                }
+                else -> {
+                    binding.coffeeCupIc.animate()
+                        .alpha(1f)
+                        .setDuration(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+                        .setListener(animationEnd = {
+                            binding.coffeeCupIc.show()
+                        })
+                }
+            }
+        })
     }
 
     private fun observeViewModel() {
@@ -66,10 +101,29 @@ class ShopDetailsFragment @Inject constructor(
 
             uiState.error?.takeIf { !it.consumed }?.consume()?.let { showToast(it) }
 
-            uiState.items?.let {
-                detailsAdapter.submitList(it)
+            uiState.success?.let {
+                detailsAdapter.submitList(it.items)
             }
         })
+
+        activityViewModel.detailsAction.observe(
+            viewLifecycleOwner,
+            EventObserver(this::handleDetailsAction)
+        )
+
     }
 
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    private fun handleDetailsAction(action: DetailsAction) {
+        when (action) {
+            DetailsAction.Back -> requireActivity().onBackPressed()
+            is DetailsAction.Share -> context?.shareWithChooser(
+                action.address,
+                getString(R.string.app_name),
+                getString(R.string.share_title)
+            )
+            is DetailsAction.Call -> context?.dial(action.number)
+            is DetailsAction.OpenUrl -> context?.browse(action.url)
+        }.exhaustive
+    }
 }

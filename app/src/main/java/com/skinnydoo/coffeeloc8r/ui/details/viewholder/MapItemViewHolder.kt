@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.skinnydoo.coffeeloc8r.common.BaseViewHolder
 import com.skinnydoo.coffeeloc8r.databinding.ListItemShopDetailsMapBinding
+import com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor
 import com.skinnydoo.coffeeloc8r.ui.details.models.MapItem
 import com.skinnydoo.coffeeloc8r.utils.OnMapAndViewReadyListener
 import com.skinnydoo.coffeeloc8r.utils.extensions.executeAfter
@@ -13,7 +14,8 @@ import com.skinnydoo.coffeeloc8r.utils.extensions.executeAfter
 private const val DEFAULT_ZOOM = 16f
 
 class MapItemViewHolder(
-    private val binding: ListItemShopDetailsMapBinding
+    private val binding: ListItemShopDetailsMapBinding,
+    private val actor: DetailsActor
 ) : BaseViewHolder<MapItem>(binding.root),
     OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
     private lateinit var shopLocation: LatLng
@@ -21,6 +23,7 @@ class MapItemViewHolder(
     override fun bind(item: MapItem) {
         binding.executeAfter {
             this.item = item
+            this.actor = this@MapItemViewHolder.actor
             shopLocation = LatLng(item.lat, item.lon)
             with(binding.mapView) {
                 onCreate(null)

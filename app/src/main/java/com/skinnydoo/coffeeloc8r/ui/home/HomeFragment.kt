@@ -169,8 +169,19 @@ class HomeFragment @Inject constructor(
                 isMyLocationEnabled = true
                 uiSettings.isMyLocationButtonEnabled = true
             }
+
+            setOnMarkerClickListener { handleMarkerClicked(it) }
         }
         shops.forEach(this::addCoffeeShopOnMap)
+    }
+
+    private fun handleMarkerClicked(marker: Marker?): Boolean {
+        marker?.let {
+            val shop = it.tag as CoffeeShop
+            Timber.d("Marker Clicked: $shop")
+            navController.navigate(HomeFragmentDirections.toShopDetails(shop))
+        }
+        return true
     }
 
     private fun initView(savedInstanceState: Bundle?) {
@@ -246,7 +257,7 @@ class HomeFragment @Inject constructor(
         when (action) {
             is HomeAction.ShowCoffeeShopDetails -> {
                 Timber.d("Clicked ${action.shop}")
-                navController.navigate(HomeFragmentDirections.toShopDetails(action.shop.id))
+                navController.navigate(HomeFragmentDirections.toShopDetails(action.shop))
             }
         }.exhaustive
     }

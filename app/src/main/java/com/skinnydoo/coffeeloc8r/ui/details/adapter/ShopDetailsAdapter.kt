@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.common.BaseViewHolder
+import com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor
 import com.skinnydoo.coffeeloc8r.ui.details.models.ShopDetailsItem
 import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactory
 
 class ShopDetailsAdapter(
     private val appExecutors: AppExecutors,
-    private val typeFactory: DetailsViewTypeFactory
+    private val typeFactory: DetailsViewTypeFactory,
+    val actor: DetailsActor
 ) : ListAdapter<ShopDetailsItem, BaseViewHolder<ShopDetailsItem>>(
     AsyncDifferConfig.Builder(ShopDetailsItemDiff)
         .setBackgroundThreadExecutor(appExecutors.diskIO)
@@ -33,7 +35,8 @@ class ShopDetailsAdapter(
             parent,
             viewType,
             appExecutors,
-            viewPool
+            viewPool,
+            actor
         ) as BaseViewHolder<ShopDetailsItem>
     }
 

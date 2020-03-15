@@ -1,45 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/guideline_vertical_56" />
+    <data>
+        <variable
+            name="actor"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor" />
+    </data>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/powered_by_btn"
-        style="@style/MaterialButtonTextStyle"
-        android:fontFamily="@font/circularstd_book"
-        android:padding="@dimen/spacing_small"
-        android:paddingStart="@dimen/no_spacing"
-        android:paddingEnd="@dimen/spacing_small"
-        android:text="@string/details_powered_by"
-        android:textColor="@color/grey_500"
-        app:icon="@drawable/ic_foursquare"
-        app:iconGravity="textEnd"
-        app:iconSize="24dp"
-        app:iconTint="@null"
-        android:textSize="@dimen/font_small"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/link_ic_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_circle_24"
-        android:src="@drawable/ic_link_24"
-        app:layout_constraintBottom_toBottomOf="@id/powered_by_btn"
-        app:layout_constraintEnd_toStartOf="@id/guideline_start"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/powered_by_btn" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/guideline_vertical_56" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/powered_by_btn"
+            style="@style/MaterialButtonTextStyle"
+            android:fontFamily="@font/circularstd_book"
+            android:padding="@dimen/spacing_small"
+            android:paddingStart="@dimen/no_spacing"
+            android:paddingEnd="@dimen/spacing_small"
+            android:text="@string/details_powered_by"
+            android:textColor="@color/grey_500"
+            app:icon="@drawable/ic_foursquare"
+            app:iconGravity="textEnd"
+            app:iconSize="24dp"
+            app:iconTint="@null"
+            android:onClick="@{() -> actor.poweredByClicked(@string/powered_by_url)}"
+            android:textSize="@dimen/font_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/link_ic_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_circle_24"
+            android:src="@drawable/ic_link_24"
+            app:layout_constraintBottom_toBottomOf="@id/powered_by_btn"
+            app:layout_constraintEnd_toStartOf="@id/guideline_start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/powered_by_btn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

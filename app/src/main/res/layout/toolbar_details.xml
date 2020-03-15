@@ -5,13 +5,20 @@
 
     <data>
 
+        <variable
+            name="actor"
+            type="com.skinnydoo.coffeeloc8r.ui.details.models.DetailsActor" />
+
+        <variable
+            name="shop"
+            type="com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop" />
     </data>
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/transparent"
+        android:background="@color/brown"
         android:theme="@style/AppTheme.PopupOverlay"
         app:contentInsetStart="@dimen/no_spacing"
         app:layout_collapseMode="pin">
@@ -42,11 +49,15 @@
                 android:contentDescription="@string/content_description_ic_back"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="fitCenter"
+                android:foreground="?attr/selectableItemBackground"
+                android:onClick="@{() -> actor.backIconClicked()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/guideline_start"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_back" />
+                app:srcCompat="@drawable/ic_back"
+                tools:targetApi="m"
+                tools:ignore="UnusedAttribute" />
 
             <TextView
                 android:id="@+id/toolbar_title"
@@ -54,7 +65,7 @@
                 android:layout_height="@dimen/no_spacing"
                 android:fontFamily="@font/sf_pro_text_semibold"
                 android:gravity="center"
-                android:text="Tim Hortons"
+                android:text="@{shop.name}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/font_medium"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -68,6 +79,7 @@
                 android:layout_height="@dimen/spacing_huge_56"
                 android:background="@color/transparent"
                 android:tint="@color/white"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/guideline_end"

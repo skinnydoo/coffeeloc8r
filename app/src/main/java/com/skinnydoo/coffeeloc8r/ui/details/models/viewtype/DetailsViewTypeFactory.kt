@@ -18,6 +18,7 @@ interface DetailsViewTypeFactory {
         parent: ViewGroup,
         viewType: Int,
         appExecutors: AppExecutors,
-        viewPool: RecyclerView.RecycledViewPool
+        viewPool: RecyclerView.RecycledViewPool,
+        actor: DetailsActor
     ): BaseViewHolder<*>
 }

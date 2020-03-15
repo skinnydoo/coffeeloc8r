@@ -11,6 +11,7 @@ import com.skinnydoo.coffeeloc8r.di.scope.PerActivity
 import com.skinnydoo.coffeeloc8r.ui.base.BaseActivityModule
 import com.skinnydoo.coffeeloc8r.ui.details.ShopDetailsFragment
 import com.skinnydoo.coffeeloc8r.ui.details.ShopDetailsViewModel
+import com.skinnydoo.coffeeloc8r.ui.details.models.DetailsAction
 import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactory
 import com.skinnydoo.coffeeloc8r.ui.details.models.viewtype.DetailsViewTypeFactoryImpl
 import com.skinnydoo.coffeeloc8r.ui.home.HomeFragment
@@ -61,7 +62,6 @@ abstract class MainModule {
     @PerActivity
     abstract fun bindDetailsViewTypeFactory(factory: DetailsViewTypeFactoryImpl): DetailsViewTypeFactory
 
-
     @Binds
     @PerActivity
     abstract fun bindMainActivity(activity: MainActivity): AppCompatActivity
@@ -74,6 +74,15 @@ abstract class MainModule {
         ): (HomeAction) -> Unit {
             val viewModel = activity.obtainViewModel<MainViewModel>(factory)
             return viewModel::emitHomeAction
+        }
+
+        @Provides
+        fun provideDetailsAction(
+            activity: AppCompatActivity,
+            factory: ViewModelProvider.Factory
+        ): (DetailsAction) -> Unit {
+            val viewModel = activity.obtainViewModel<MainViewModel>(factory)
+            return viewModel::emitDetailsViewAction
         }
     }
 }

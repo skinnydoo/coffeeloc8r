@@ -40,9 +40,10 @@
         android:label="ShopDetailsFragment"
         tools:layout="@layout/fragment_shop_details">
 
+
         <argument
-            android:name="shopId"
-            app:argType="string" />
+            android:name="shop"
+            app:argType="com.skinnydoo.coffeeloc8r.domain.models.CoffeeShop" />
     </fragment>
 
 </navigation>

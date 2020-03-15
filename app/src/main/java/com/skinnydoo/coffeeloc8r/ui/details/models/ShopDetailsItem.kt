@@ -44,7 +44,7 @@ data class HoursItem(
     val id: String,
     val hours: List<CoffeeShopHours>,
     val open: Boolean,
-    val closing: String
+    val status: String?
 ) : ShopDetailsItem() {
     override fun isTheSame(other: Differentiable): Boolean = (id == (other as? HoursItem)?.id)
     override fun type(typeFactory: DetailsViewTypeFactory): Int = typeFactory.type(this)
