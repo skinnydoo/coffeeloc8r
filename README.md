@@ -8,7 +8,7 @@ First thing you will need to compile this project is to create a Foursquare deve
 
 Secondly, you will also need to be a Google Maps developer, in order to create and display the map. You can get an API key by visiting the [Google Maps Android API](https://developers.google.com/maps/documentation/android-sdk/get-api-key) website.
 
-Then lastly create a resource file `.../res/values/api_key.xml` (this path is ignored by git) with the following content:
+Then lastly create a resource file `.../res/values/api_keys.xml` (this path is ignored by git) with the following content:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
