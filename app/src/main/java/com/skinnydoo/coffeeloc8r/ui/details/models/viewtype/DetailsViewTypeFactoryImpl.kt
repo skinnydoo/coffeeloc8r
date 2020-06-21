@@ -8,14 +8,14 @@ import com.skinnydoo.coffeeloc8r.common.AppConstants
 import com.skinnydoo.coffeeloc8r.common.AppExecutors
 import com.skinnydoo.coffeeloc8r.common.BaseViewHolder
 import com.skinnydoo.coffeeloc8r.databinding.*
-import com.skinnydoo.coffeeloc8r.di.scope.PerActivity
 import com.skinnydoo.coffeeloc8r.ui.details.adapter.CoffeeShopHoursAdapter
 import com.skinnydoo.coffeeloc8r.ui.details.models.*
 import com.skinnydoo.coffeeloc8r.ui.details.viewholder.*
 import com.skinnydoo.coffeeloc8r.utils.extensions.bind
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
-@PerActivity
+@ActivityScoped
 class DetailsViewTypeFactoryImpl @Inject constructor() : DetailsViewTypeFactory {
     override fun type(contactItem: ContactItem): Int = R.layout.list_item_shop_details_contacts
     override fun type(contactItem: PoweredByItem): Int = R.layout.list_item_shop_details_powered_by

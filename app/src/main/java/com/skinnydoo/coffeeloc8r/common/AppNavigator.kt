@@ -2,7 +2,7 @@ package com.skinnydoo.coffeeloc8r.common
 
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
@@ -12,7 +12,7 @@ import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.utils.extensions.onClick
 import javax.inject.Inject
 
-class AppNavigator @Inject constructor(private val activity: AppCompatActivity) {
+class AppNavigator @Inject constructor(private val activity: FragmentActivity) {
 
     fun showErrorDialog(
         titleRes: Int? = null,

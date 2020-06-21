@@ -7,14 +7,15 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     signingConfigs {
         release {
             storeFile file('C:\\Users\\Simel\\keystores\\coffee-loc8r\\coffee-loc8r-release.keystore')
-            storePassword ''
-            keyAlias = ''
-            keyPassword ''
+            storePassword 'CoffeeLoc8r2020586'
+            keyAlias = 'coffee-loc8r-release'
+            keyPassword 'CoffeeLoc8r2020586'
         }
     }
     buildToolsVersion = sdk.buildTools
@@ -51,13 +52,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
-    }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -126,6 +125,12 @@ dependencies {
     }
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
 
+    // Hilt
+    implementation "com.google.dagger:hilt-android:${versions.hilt_android}"
+    kapt "com.google.dagger:hilt-android-compiler:${versions.hilt_android}"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hilt_jetpack}"
+    kapt "androidx.hilt:hilt-compiler:${versions.hilt_jetpack}"
+
     //Material Dialog
     implementation "com.afollestad.material-dialogs:bottomsheets:${versions.material_dialog}"
     implementation "com.afollestad.material-dialogs:core:${versions.material_dialog}"
@@ -185,6 +190,10 @@ dependencies {
 
 androidExtensions {
     experimental = true
+}
+
+kapt {
+    correctErrorTypes true
 }
 
 /*def propsFile = rootProject.file('keystore.properties')

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -18,14 +19,15 @@ import com.skinnydoo.coffeeloc8r.BuildConfig
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppConstants
 import com.skinnydoo.coffeeloc8r.databinding.ActivityMainBinding
-import com.skinnydoo.coffeeloc8r.ui.base.BaseFragmentFactoryActivity
 import com.skinnydoo.coffeeloc8r.utils.delegates.contentView
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
-class MainActivity : BaseFragmentFactoryActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
   private val binding by contentView<ActivityMainBinding>(R.layout.activity_main)
-  private val viewModel by viewModels<MainViewModel> { viewModelFactory }
+  private val viewModel by viewModels<MainViewModel>()
 
   private lateinit var navController: NavController
 

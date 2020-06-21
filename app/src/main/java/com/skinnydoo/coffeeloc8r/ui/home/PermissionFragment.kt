@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
@@ -19,16 +18,17 @@ import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.utils.PermissionsManager
 import com.skinnydoo.coffeeloc8r.utils.extensions.action
 import com.skinnydoo.coffeeloc8r.utils.extensions.snackBar
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import javax.inject.Inject
 
 private const val REQUEST_PERMISSION_REQUEST_CODE = 100
 private val PERMISSION_REQUIRED = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
-class PermissionFragment @Inject constructor(
-    private val permissionsManager: PermissionsManager,
-    private val activity: AppCompatActivity
-) : Fragment() {
+@AndroidEntryPoint
+class PermissionFragment : Fragment() {
+
+    @Inject lateinit var permissionsManager: PermissionsManager
 
     private val navController by lazy { findNavController() }
 
@@ -40,7 +40,7 @@ class PermissionFragment @Inject constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Get a reference to the rootView
-        rootView = activity.findViewById(android.R.id.content)
+        rootView = requireActivity().findViewById(android.R.id.content)
     }
 
     override fun onStart() {
@@ -51,7 +51,7 @@ class PermissionFragment @Inject constructor(
 
     private fun requestLocationPermission() {
         permissionsManager.requestPermission(
-            activity = activity,
+            activity = requireActivity(),
             permission = Manifest.permission.ACCESS_FINE_LOCATION,
             callBack = object : PermissionsManager.PermissionsManagerListener {
                 override fun onNeedPermission() {
@@ -120,7 +120,7 @@ class PermissionFragment @Inject constructor(
 
     private fun showLocationRationale() {
         rationaleProvided = true
-        MaterialDialog(activity).show {
+        MaterialDialog(requireContext()).show {
             title(R.string.app_location_rational_title)
             message(R.string.app_location_rational_msg)
             positiveButton(android.R.string.ok) {

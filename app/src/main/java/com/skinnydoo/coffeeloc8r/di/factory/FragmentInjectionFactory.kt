@@ -2,12 +2,12 @@ package com.skinnydoo.coffeeloc8r.di.factory
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import com.skinnydoo.coffeeloc8r.di.scope.PerActivity
+import dagger.hilt.android.scopes.ActivityScoped
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Provider
 
-@PerActivity
+@ActivityScoped
 class FragmentInjectionFactory @Inject constructor(
   private val creators: Map<Class<out Fragment>, @JvmSuppressWildcards Provider<Fragment>>
 ): FragmentFactory() {

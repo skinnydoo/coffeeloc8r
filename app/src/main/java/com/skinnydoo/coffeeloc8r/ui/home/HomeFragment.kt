@@ -1,5 +1,6 @@
 package com.skinnydoo.coffeeloc8r.ui.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
@@ -14,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -38,6 +38,7 @@ import com.skinnydoo.coffeeloc8r.utils.OnMapAndViewReadyListener
 import com.skinnydoo.coffeeloc8r.utils.event.EventObserver
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.extensions.showToast
+import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
@@ -54,16 +55,15 @@ private const val KEY_LOCATION = "location"
 private const val KEY_LOCATION_LAT = "location_lat"
 private const val KEY_LOCATION_LON = "location_lon"
 
-class HomeFragment @Inject constructor(
-    appExecutors: AppExecutors,
-    private val fusedLocationClient: FusedLocationProviderClient, // provide access to the Fused Location Provider API
-    private val locationRequest: LocationRequest, // stores parameters for requests to the Fused Location Provider API
-    private val settingsClient: SettingsClient, // provide access to the Location Settings API
-    private val locationSettingsRequest: LocationSettingsRequest, // Used to determine if the device has optimal location settings
-    private val viewModelFactory: ViewModelProvider.Factory,
-    private val appNavigator: AppNavigator,
-    private val actor: HomeActor
-) : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
+@AndroidEntryPoint
+class HomeFragment : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
+
+    @Inject lateinit var appExecutors: AppExecutors
+    @Inject lateinit var fusedLocationClient: FusedLocationProviderClient // provide access to the Fused Location Provider API
+    @Inject lateinit var locationRequest: LocationRequest // stores parameters for requests to the Fused Location Provider API
+    @Inject lateinit var settingsClient: SettingsClient // provide access to the Location Settings API
+    @Inject lateinit var locationSettingsRequest: LocationSettingsRequest // Used to determine if the device has optimal location settings
+    @Inject lateinit var appNavigator: AppNavigator
 
     private var _binding: FragmentHomeBinding? = null
     private val binding
@@ -71,8 +71,10 @@ class HomeFragment @Inject constructor(
 
     private val navController by lazy { findNavController() }
 
-    private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
-    private val activityViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val viewModel by viewModels<HomeViewModel>()
+    private val activityViewModel by activityViewModels<MainViewModel>()
+
+    private val actor by lazy { HomeActor(activityViewModel::emitHomeAction) }
 
     private val bottomSheetAdapter by lazy { BottomSheetAdapter(appExecutors, actor) }
 
@@ -159,6 +161,7 @@ class HomeFragment @Inject constructor(
         binding.mapView.onLowMemory()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap ?: return // return early if map was not initialized properly
         Timber.d("Map is ready...making initial setup")
@@ -308,6 +311,7 @@ class HomeFragment @Inject constructor(
     /**
      * Request location updates from the Fused Location Provider
      */
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
         Timber.d("Let's check if device has the optimal location settings...")
         settingsClient.checkLocationSettings(locationSettingsRequest)

@@ -25,18 +25,18 @@ import javax.inject.Inject
 
 
 class ShopDetailsFragment @Inject constructor(
-    private val viewModelFactory: ViewModelProvider.Factory,
     viewTypeFactory: DetailsViewTypeFactory,
-    appExecutors: AppExecutors,
-    private val actor: DetailsActor
+    appExecutors: AppExecutors
 ) : Fragment() {
 
     private var _binding: FragmentShopDetailsBinding? = null
     private val binding get() = _binding!!
 
+
     private val navArgs by navArgs<ShopDetailsFragmentArgs>()
-    private val viewModel by viewModels<ShopDetailsViewModel> { viewModelFactory }
-    private val activityViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val viewModel by viewModels<ShopDetailsViewModel>()
+    private val activityViewModel by activityViewModels<MainViewModel> ()
+    private val actor by lazy { DetailsActor(activityViewModel::emitDetailsViewAction) }
     private val detailsAdapter by lazy { ShopDetailsAdapter(appExecutors, viewTypeFactory, actor) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

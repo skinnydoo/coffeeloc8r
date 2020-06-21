@@ -1,16 +1,16 @@
 package com.skinnydoo.coffeeloc8r
 
+import android.app.Application
 import android.os.StrictMode
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.skinnydoo.coffeeloc8r.di.DaggerAppComponent
 import com.skinnydoo.coffeeloc8r.utils.log.MyDebugTree
 import com.skinnydoo.coffeeloc8r.utils.log.ReleaseTree
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-class CoffeeLoc8rApp : DaggerApplication() {
+@HiltAndroidApp
+class CoffeeLoc8rApp : Application() {
 
     override fun onCreate() {
         // ThreeTenBP for times and dates, called before super to be available for objects
@@ -22,14 +22,10 @@ class CoffeeLoc8rApp : DaggerApplication() {
         }
         super.onCreate()
 
-       //setUpFirebaseCrashlytics()
+       setUpFirebaseCrashlytics()
         if (BuildConfig.DEBUG) Timber.plant(MyDebugTree())
         else Timber.plant(ReleaseTree())
 
-    }
-
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.factory().create(this)
     }
 
     private fun enableStrictMode() {
