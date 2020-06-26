@@ -11,12 +11,7 @@ apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     signingConfigs {
-        release {
-            storeFile file('C:\\Users\\Simel\\keystores\\coffee-loc8r\\coffee-loc8r-release.keystore')
-            storePassword 'CoffeeLoc8r2020586'
-            keyAlias = 'coffee-loc8r-release'
-            keyPassword 'CoffeeLoc8r2020586'
-        }
+        release {}
     }
     buildToolsVersion = sdk.buildTools
     compileSdkVersion sdk.compileSdk
@@ -112,7 +107,7 @@ dependencies {
     testImplementation "org.threeten:threetenbp:${versions.threetenbp}"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:${versions.firebase_analytic}"
+    implementation "com.google.firebase:firebase-analytics-ktx:${versions.firebase_analytic}"
     implementation "com.google.firebase:firebase-crashlytics:${versions.firebase_crashlitics}"
 
     // GSON component
@@ -192,11 +187,7 @@ androidExtensions {
     experimental = true
 }
 
-kapt {
-    correctErrorTypes true
-}
-
-/*def propsFile = rootProject.file('keystore.properties')
+def propsFile = rootProject.file('keystore.properties')
 def configName = 'release'
 
 if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
@@ -219,4 +210,4 @@ if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
 } else {
     println 'keystore.properties not found'
     android.buildTypes.release.signingConfig = null
-}*/
+}

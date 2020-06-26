@@ -1,6 +1,5 @@
 package com.skinnydoo.coffeeloc8r.ui.home
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +15,7 @@ import com.skinnydoo.coffeeloc8r.utils.network.Result
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @ViewModelInject constructor(
+class HomeViewModel @Inject constructor(
     private val searchCoffeeShop: SearchCoffeeShopUseCase
 ) : ViewModel() {
 

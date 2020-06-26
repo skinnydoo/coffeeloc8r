@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -38,7 +39,6 @@ import com.skinnydoo.coffeeloc8r.utils.OnMapAndViewReadyListener
 import com.skinnydoo.coffeeloc8r.utils.event.EventObserver
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.extensions.showToast
-import dagger.hilt.android.AndroidEntryPoint
 import org.threeten.bp.LocalTime
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
@@ -55,23 +55,23 @@ private const val KEY_LOCATION = "location"
 private const val KEY_LOCATION_LAT = "location_lat"
 private const val KEY_LOCATION_LON = "location_lon"
 
-@AndroidEntryPoint
-class HomeFragment : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
-
-    @Inject lateinit var appExecutors: AppExecutors
-    @Inject lateinit var fusedLocationClient: FusedLocationProviderClient // provide access to the Fused Location Provider API
-    @Inject lateinit var locationRequest: LocationRequest // stores parameters for requests to the Fused Location Provider API
-    @Inject lateinit var settingsClient: SettingsClient // provide access to the Location Settings API
-    @Inject lateinit var locationSettingsRequest: LocationSettingsRequest // Used to determine if the device has optimal location settings
-    @Inject lateinit var appNavigator: AppNavigator
+class HomeFragment @Inject constructor(
+    viewModelFactory: ViewModelProvider.Factory,
+    appExecutors: AppExecutors,
+    private val fusedLocationClient: FusedLocationProviderClient, // provide access to the Fused Location Provider API
+    private val locationRequest: LocationRequest, // stores parameters for requests to the Fused Location Provider API
+    private val settingsClient: SettingsClient, // provide access to the Location Settings API
+    private val locationSettingsRequest: LocationSettingsRequest, // Used to determine if the device has optimal location settings
+    private val appNavigator: AppNavigator
+) : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding
-        get() = _binding!!
+        get() = _binding ?: throw IllegalStateException("_binding not initialized")
 
     private val navController by lazy { findNavController() }
 
-    private val viewModel by viewModels<HomeViewModel>()
+    private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
 
     private val actor by lazy { HomeActor(activityViewModel::emitHomeAction) }
@@ -141,9 +141,6 @@ class HomeFragment : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapR
         super.onDestroyView()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     private fun clearResources() {
         map?.clear()

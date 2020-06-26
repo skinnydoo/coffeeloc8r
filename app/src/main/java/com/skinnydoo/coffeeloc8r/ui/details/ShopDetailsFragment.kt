@@ -25,17 +25,19 @@ import javax.inject.Inject
 
 
 class ShopDetailsFragment @Inject constructor(
+    viewModelFactory: ViewModelProvider.Factory,
     viewTypeFactory: DetailsViewTypeFactory,
     appExecutors: AppExecutors
 ) : Fragment() {
 
     private var _binding: FragmentShopDetailsBinding? = null
-    private val binding get() = _binding!!
+    private val binding
+        get() = _binding ?: throw IllegalStateException("_binding not initialized")
 
 
     private val navArgs by navArgs<ShopDetailsFragmentArgs>()
-    private val viewModel by viewModels<ShopDetailsViewModel>()
-    private val activityViewModel by activityViewModels<MainViewModel> ()
+    private val viewModel by viewModels<ShopDetailsViewModel> { viewModelFactory }
+    private val activityViewModel by activityViewModels<MainViewModel>()
     private val actor by lazy { DetailsActor(activityViewModel::emitDetailsViewAction) }
     private val detailsAdapter by lazy { ShopDetailsAdapter(appExecutors, viewTypeFactory, actor) }
 
@@ -78,7 +80,9 @@ class ShopDetailsFragment @Inject constructor(
                 AppBarState.COLLAPSED -> {
                     binding.coffeeCupIc.animate()
                         .alpha(0f)
-                        .setDuration(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+                        .setDuration(
+                            resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+                        )
                         .setListener(animationEnd = {
                             binding.coffeeCupIc.remove()
                         })
@@ -86,7 +90,9 @@ class ShopDetailsFragment @Inject constructor(
                 else -> {
                     binding.coffeeCupIc.animate()
                         .alpha(1f)
-                        .setDuration(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+                        .setDuration(
+                            resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+                        )
                         .setListener(animationEnd = {
                             binding.coffeeCupIc.show()
                         })

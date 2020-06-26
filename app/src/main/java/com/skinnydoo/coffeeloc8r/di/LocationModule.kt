@@ -19,7 +19,6 @@ class LocationModule {
         return LocationServices.getFusedLocationProviderClient(context)
     }
 
-    @Singleton
     @Provides
     fun provideSettingsClient(@ApplicationContext context: Context): SettingsClient {
         return LocationServices.getSettingsClient(context)
@@ -45,7 +44,6 @@ class LocationModule {
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
 
-    @Singleton
     @Provides
     fun provideLocationSettingsRequest(locationRequest: LocationRequest): LocationSettingsRequest {
         return LocationSettingsRequest.Builder()
