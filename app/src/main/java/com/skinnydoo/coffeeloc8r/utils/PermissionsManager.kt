@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.skinnydoo.coffeeloc8r.utils.extensions.applyMe
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +17,7 @@ class PermissionsManager @Inject constructor(
     private val prefs: SharedPreferences
 ) {
 
-    fun requestPermission(activity: AppCompatActivity, permission: String, callBack: PermissionsManagerListener) {
+    fun requestPermission(activity: FragmentActivity, permission: String, callBack: PermissionsManagerListener) {
         if (shouldRequestPermission(activity, permission)) {
 
             val shouldProvideRationale = ActivityCompat.shouldShowRequestPermissionRationale(

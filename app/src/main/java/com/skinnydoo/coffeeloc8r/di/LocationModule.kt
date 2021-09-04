@@ -2,12 +2,15 @@ package com.skinnydoo.coffeeloc8r.di
 
 import android.content.Context
 import com.google.android.gms.location.*
-import com.skinnydoo.coffeeloc8r.di.qualifier.ApplicationContext
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class LocationModule {
 
     @Singleton
@@ -16,7 +19,6 @@ class LocationModule {
         return LocationServices.getFusedLocationProviderClient(context)
     }
 
-    @Singleton
     @Provides
     fun provideSettingsClient(@ApplicationContext context: Context): SettingsClient {
         return LocationServices.getSettingsClient(context)
@@ -42,7 +44,6 @@ class LocationModule {
             priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
         }
 
-    @Singleton
     @Provides
     fun provideLocationSettingsRequest(locationRequest: LocationRequest): LocationSettingsRequest {
         return LocationSettingsRequest.Builder()

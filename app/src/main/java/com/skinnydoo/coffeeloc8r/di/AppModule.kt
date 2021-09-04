@@ -7,20 +7,18 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import androidx.core.os.ConfigurationCompat
 import com.skinnydoo.coffeeloc8r.common.AppConstants
-import com.skinnydoo.coffeeloc8r.di.qualifier.ApplicationContext
 import com.skinnydoo.coffeeloc8r.di.qualifier.LocaleLang
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+@InstallIn(ApplicationComponent::class)
+object AppModule {
 
-    @Provides
-    @ApplicationContext
-    fun provideApplicationContext(app: Application): Context = app
-
-    @Singleton
     @Provides
     fun provideResources(app: Application): Resources = app.resources
 

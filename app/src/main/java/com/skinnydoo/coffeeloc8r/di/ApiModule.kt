@@ -6,11 +6,13 @@ import com.skinnydoo.coffeeloc8r.BuildConfig
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.api.FoursquareService
 import com.skinnydoo.coffeeloc8r.common.AppConstants
-import com.skinnydoo.coffeeloc8r.di.qualifier.ApplicationContext
 import com.skinnydoo.coffeeloc8r.di.qualifier.CacheDuration
 import com.skinnydoo.coffeeloc8r.utils.network.CoffeeLoc8rRequestInterceptor
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,9 +22,11 @@ import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
 
+private const val cacheSize = 10 * 1024 * 1024L // 10MB
 
 @Module
-class ApiModule {
+@InstallIn(ApplicationComponent::class)
+object ApiModule {
 
     @Singleton
     @Provides
@@ -92,9 +96,5 @@ class ApiModule {
     @Singleton
     fun provideFoursquareService(retrofit: Retrofit): FoursquareService {
         return retrofit.create(FoursquareService::class.java)
-    }
-
-    companion object {
-        private const val cacheSize = 10 * 1024 * 1024L // 10MB
     }
 }

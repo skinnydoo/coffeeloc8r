@@ -1,5 +1,6 @@
 package com.skinnydoo.coffeeloc8r.ui.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.IntentSender
@@ -55,24 +56,25 @@ private const val KEY_LOCATION_LAT = "location_lat"
 private const val KEY_LOCATION_LON = "location_lon"
 
 class HomeFragment @Inject constructor(
+    viewModelFactory: ViewModelProvider.Factory,
     appExecutors: AppExecutors,
     private val fusedLocationClient: FusedLocationProviderClient, // provide access to the Fused Location Provider API
     private val locationRequest: LocationRequest, // stores parameters for requests to the Fused Location Provider API
     private val settingsClient: SettingsClient, // provide access to the Location Settings API
     private val locationSettingsRequest: LocationSettingsRequest, // Used to determine if the device has optimal location settings
-    private val viewModelFactory: ViewModelProvider.Factory,
-    private val appNavigator: AppNavigator,
-    private val actor: HomeActor
+    private val appNavigator: AppNavigator
 ) : Fragment(), OnMapAndViewReadyListener.OnGlobalLayoutAndMapReadyListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding
-        get() = _binding!!
+        get() = _binding ?: throw IllegalStateException("_binding not initialized")
 
     private val navController by lazy { findNavController() }
 
     private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
-    private val activityViewModel by activityViewModels<MainViewModel> { viewModelFactory }
+    private val activityViewModel by activityViewModels<MainViewModel>()
+
+    private val actor by lazy { HomeActor(activityViewModel::emitHomeAction) }
 
     private val bottomSheetAdapter by lazy { BottomSheetAdapter(appExecutors, actor) }
 
@@ -139,9 +141,6 @@ class HomeFragment @Inject constructor(
         super.onDestroyView()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 
     private fun clearResources() {
         map?.clear()
@@ -159,6 +158,7 @@ class HomeFragment @Inject constructor(
         binding.mapView.onLowMemory()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap?) {
         map = googleMap ?: return // return early if map was not initialized properly
         Timber.d("Map is ready...making initial setup")
@@ -308,6 +308,7 @@ class HomeFragment @Inject constructor(
     /**
      * Request location updates from the Fused Location Provider
      */
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
         Timber.d("Let's check if device has the optimal location settings...")
         settingsClient.checkLocationSettings(locationSettingsRequest)

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentFactory
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -18,28 +20,35 @@ import com.skinnydoo.coffeeloc8r.BuildConfig
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppConstants
 import com.skinnydoo.coffeeloc8r.databinding.ActivityMainBinding
-import com.skinnydoo.coffeeloc8r.ui.base.BaseFragmentFactoryActivity
 import com.skinnydoo.coffeeloc8r.utils.delegates.contentView
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ActivityComponent
 import timber.log.Timber
 
-class MainActivity : BaseFragmentFactoryActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
 
-  private val binding by contentView<ActivityMainBinding>(R.layout.activity_main)
-  private val viewModel by viewModels<MainViewModel> { viewModelFactory }
+    private val binding by contentView<ActivityMainBinding>(R.layout.activity_main)
+    private val viewModel by viewModels<MainViewModel>()
 
-  private lateinit var navController: NavController
+    private lateinit var navController: NavController
 
     private lateinit var appUpdateManager: AppUpdateManager
-  
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding.lifecycleOwner = this
-    binding.vm = viewModel
-      appUpdateManager = AppUpdateManagerFactory.create(this)
-    navController = findNavController(R.id.nav_host_main)
-    initView()
-      requestUpdate()
-  }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val entryPoint = EntryPointAccessors.fromActivity(this, MainActivityEntryPoint::class.java)
+        supportFragmentManager.fragmentFactory = entryPoint.fragmentFactory()
+        super.onCreate(savedInstanceState)
+        binding.lifecycleOwner = this
+        binding.vm = viewModel
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        navController = findNavController(R.id.nav_host_main)
+        initView()
+        requestUpdate()
+    }
 
     override fun onResume() {
         super.onResume()
@@ -72,24 +81,24 @@ class MainActivity : BaseFragmentFactoryActivity() {
         }
     }
 
-  private fun initView() {
-    setUpListeners()
-  }
-
-  private fun setUpListeners() {
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-      if (BuildConfig.DEBUG) logDestination(destination)
+    private fun initView() {
+        setUpListeners()
     }
-  }
 
-  private fun logDestination(destination: NavDestination) {
-    val dest: String = try {
-      resources.getResourceName(destination.id)
-    } catch (e: Resources.NotFoundException) {
-      destination.id.toString()
+    private fun setUpListeners() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (BuildConfig.DEBUG) logDestination(destination)
+        }
     }
-    Timber.d("Navigated to $dest")
-  }
+
+    private fun logDestination(destination: NavDestination) {
+        val dest: String = try {
+            resources.getResourceName(destination.id)
+        } catch (e: Resources.NotFoundException) {
+            destination.id.toString()
+        }
+        Timber.d("Navigated to $dest")
+    }
 
     private fun requestUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener {
@@ -116,5 +125,11 @@ class MainActivity : BaseFragmentFactoryActivity() {
                 startInAppUpdate(it)
             }
         }
+    }
+
+    @EntryPoint
+    @InstallIn(ActivityComponent::class)
+    interface MainActivityEntryPoint {
+        fun fragmentFactory(): FragmentFactory
     }
 }

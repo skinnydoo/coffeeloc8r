@@ -7,15 +7,11 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     signingConfigs {
-        release {
-            storeFile file('C:\\Users\\Simel\\keystores\\coffee-loc8r\\coffee-loc8r-release.keystore')
-            storePassword ''
-            keyAlias = ''
-            keyPassword ''
-        }
+        release {}
     }
     buildToolsVersion = sdk.buildTools
     compileSdkVersion sdk.compileSdk
@@ -51,13 +47,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 
-    dataBinding {
-        enabled = true
-    }
-    viewBinding {
-        enabled = true
-    }
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -113,7 +107,7 @@ dependencies {
     testImplementation "org.threeten:threetenbp:${versions.threetenbp}"
 
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:${versions.firebase_analytic}"
+    implementation "com.google.firebase:firebase-analytics-ktx:${versions.firebase_analytic}"
     implementation "com.google.firebase:firebase-crashlytics:${versions.firebase_crashlitics}"
 
     // GSON component
@@ -125,6 +119,12 @@ dependencies {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:${versions.hilt_android}"
+    kapt "com.google.dagger:hilt-android-compiler:${versions.hilt_android}"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hilt_jetpack}"
+    kapt "androidx.hilt:hilt-compiler:${versions.hilt_jetpack}"
 
     //Material Dialog
     implementation "com.afollestad.material-dialogs:bottomsheets:${versions.material_dialog}"
@@ -187,7 +187,7 @@ androidExtensions {
     experimental = true
 }
 
-/*def propsFile = rootProject.file('keystore.properties')
+def propsFile = rootProject.file('keystore.properties')
 def configName = 'release'
 
 if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
@@ -210,4 +210,4 @@ if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
 } else {
     println 'keystore.properties not found'
     android.buildTypes.release.signingConfig = null
-}*/
+}
