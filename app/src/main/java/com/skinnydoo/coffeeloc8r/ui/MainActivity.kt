@@ -6,10 +6,8 @@ import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentFactory
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -20,116 +18,112 @@ import com.skinnydoo.coffeeloc8r.BuildConfig
 import com.skinnydoo.coffeeloc8r.R
 import com.skinnydoo.coffeeloc8r.common.AppConstants
 import com.skinnydoo.coffeeloc8r.databinding.ActivityMainBinding
-import com.skinnydoo.coffeeloc8r.utils.delegates.contentView
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
+import com.skinnydoo.coffeeloc8r.di.factory.FragmentFactoryEntryPoint
+import com.skinnydoo.coffeeloc8r.utils.delegates.contentViewDataBinding
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val binding by contentView<ActivityMainBinding>(R.layout.activity_main)
-    private val viewModel by viewModels<MainViewModel>()
+  private val binding by contentViewDataBinding<ActivityMainBinding>(R.layout.activity_main)
+  private val viewModel by viewModels<MainViewModel>()
 
-    private lateinit var navController: NavController
+  private val navHostFragment by lazy(LazyThreadSafetyMode.NONE) {
+    supportFragmentManager.findFragmentById(R.id.nav_host_main) as NavHostFragment
+  }
 
-    private lateinit var appUpdateManager: AppUpdateManager
+  private val navController
+    get() = navHostFragment.navController
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        val entryPoint = EntryPointAccessors.fromActivity(this, MainActivityEntryPoint::class.java)
-        supportFragmentManager.fragmentFactory = entryPoint.fragmentFactory()
-        super.onCreate(savedInstanceState)
-        binding.lifecycleOwner = this
-        binding.vm = viewModel
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-        navController = findNavController(R.id.nav_host_main)
-        initView()
-        requestUpdate()
-    }
+  private lateinit var appUpdateManager: AppUpdateManager
 
-    override fun onResume() {
-        super.onResume()
-        checkAppUpdateInProgress()
-    }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    val entryPoint = EntryPointAccessors.fromActivity(this, FragmentFactoryEntryPoint::class.java)
+    supportFragmentManager.fragmentFactory = entryPoint.fragmentFactory()
+    super.onCreate(savedInstanceState)
+    binding.lifecycleOwner = this
+    binding.vm = viewModel
+    appUpdateManager = AppUpdateManagerFactory.create(this)
+    initView()
+    requestUpdate()
+  }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Timber.i("RequestCode/ResultCode (Cancelled:0, Ok:-1) -> $requestCode/$resultCode")
-        when (requestCode) {
-            AppConstants.REQUEST_IMMEDIATE_UPDATE -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        // handle user's approval
-                        // For immediate updates, we might not receive this callback because the update should already
-                        // be completed by Google Play by the time the control is given back to the app.
-                    }
-                    Activity.RESULT_CANCELED -> {
-                        // Handle user's rejection
-                        Timber.w("Update flow cancelled! Result code -> $resultCode")
-                        requestUpdate() // request update again
-                    }
-                    ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
-                        // Handle update failure
-                        Timber.w("Update flow failed! Result code -> $resultCode")
-                        requestUpdate() // request update again
-                    }
-                }
-            }
+  override fun onResume() {
+    super.onResume()
+    checkAppUpdateInProgress()
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+    Timber.i("RequestCode/ResultCode (Cancelled:0, Ok:-1) -> $requestCode/$resultCode")
+    when (requestCode) {
+      AppConstants.REQUEST_IMMEDIATE_UPDATE -> {
+        when (resultCode) {
+          Activity.RESULT_OK -> {
+            // handle user's approval
+            // For immediate updates, we might not receive this callback because the update should already
+            // be completed by Google Play by the time the control is given back to the app.
+          }
+          Activity.RESULT_CANCELED -> {
+            // Handle user's rejection
+            Timber.w("Update flow cancelled! Result code -> $resultCode")
+            requestUpdate() // request update again
+          }
+          ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
+            // Handle update failure
+            Timber.w("Update flow failed! Result code -> $resultCode")
+            requestUpdate() // request update again
+          }
         }
+      }
     }
+  }
 
-    private fun initView() {
-        setUpListeners()
-    }
+  private fun initView() {
+    setUpListeners()
+  }
 
-    private fun setUpListeners() {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (BuildConfig.DEBUG) logDestination(destination)
-        }
+  private fun setUpListeners() {
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+      if (BuildConfig.DEBUG) logDestination(destination)
     }
+  }
 
-    private fun logDestination(destination: NavDestination) {
-        val dest: String = try {
-            resources.getResourceName(destination.id)
-        } catch (e: Resources.NotFoundException) {
-            destination.id.toString()
-        }
-        Timber.d("Navigated to $dest")
+  private fun logDestination(destination: NavDestination) {
+    val dest: String = try {
+      resources.getResourceName(destination.id)
+    } catch (e: Resources.NotFoundException) {
+      destination.id.toString()
     }
+    Timber.d("Navigated to $dest")
+  }
 
-    private fun requestUpdate() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener {
-            if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                Timber.d("Update available, starting the update")
-                startInAppUpdate(it)
-            }
-        }
+  private fun requestUpdate() {
+    appUpdateManager.appUpdateInfo.addOnSuccessListener {
+      if (it.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+        it.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+      ) {
+        Timber.d("Update available, starting the update")
+        startInAppUpdate(it)
+      }
     }
+  }
 
-    private fun startInAppUpdate(appUpdateInfo: AppUpdateInfo?) {
-        appUpdateManager.startUpdateFlowForResult(
-            appUpdateInfo, AppUpdateType.IMMEDIATE, this, AppConstants.REQUEST_IMMEDIATE_UPDATE
-        )
-    }
+  private fun startInAppUpdate(appUpdateInfo: AppUpdateInfo) {
+    appUpdateManager.startUpdateFlowForResult(
+      appUpdateInfo, AppUpdateType.IMMEDIATE, this, AppConstants.REQUEST_IMMEDIATE_UPDATE
+    )
+  }
 
-    private fun checkAppUpdateInProgress() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener {
-            if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                // If an in-app update is already running, resume the update.
-                Timber.i("In-app update is already running, resuming the update")
-                startInAppUpdate(it)
-            }
-        }
+  private fun checkAppUpdateInProgress() {
+    appUpdateManager.appUpdateInfo.addOnSuccessListener {
+      if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+        // If an in-app update is already running, resume the update.
+        Timber.i("In-app update is already running, resuming the update")
+        startInAppUpdate(it)
+      }
     }
-
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    interface MainActivityEntryPoint {
-        fun fragmentFactory(): FragmentFactory
-    }
+  }
 }

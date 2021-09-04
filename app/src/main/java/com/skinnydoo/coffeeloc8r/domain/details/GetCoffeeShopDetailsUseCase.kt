@@ -9,12 +9,14 @@ import com.skinnydoo.coffeeloc8r.domain.models.CoffeeShopHours
 import com.skinnydoo.coffeeloc8r.ui.details.models.*
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.network.Result
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.withContext
-import org.threeten.bp.LocalTime
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 
+@ViewModelScoped
 class GetCoffeeShopDetailsUseCase @Inject constructor(
     private val repository: CoffeeShopRepository,
     private val dispatcherProvider: CoroutinesDispatcherProvider
