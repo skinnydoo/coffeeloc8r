@@ -1,9 +1,12 @@
 package com.skinnydoo.coffeeloc8r.utils.delegates
 
 import android.app.Activity
+import android.view.LayoutInflater
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -31,6 +34,13 @@ class ContentViewBindingDelegate<out T : ViewDataBinding>(
 /**
  * Activity bindings
  */
-fun <T : ViewDataBinding> contentView(
+fun <T : ViewDataBinding> contentViewDataBinding(
     @LayoutRes layoutRes: Int
 ): ContentViewBindingDelegate<T> = ContentViewBindingDelegate(layoutRes)
+
+/**
+ * Activity ViewBinding
+ */
+inline fun <T : ViewBinding> AppCompatActivity.contentView(
+    crossinline inflater: (LayoutInflater) -> T
+) = lazy(LazyThreadSafetyMode.NONE) { inflater.invoke(layoutInflater) }

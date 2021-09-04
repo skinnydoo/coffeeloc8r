@@ -11,9 +11,11 @@ import com.skinnydoo.coffeeloc8r.utils.event.Event
 import com.skinnydoo.coffeeloc8r.utils.extensions.exhaustive
 import com.skinnydoo.coffeeloc8r.utils.mutableLiveDataOf
 import com.skinnydoo.coffeeloc8r.utils.network.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ShopDetailsViewModel @Inject constructor(
     private val getCoffeeShopDetails: GetCoffeeShopDetailsUseCase
 ) : ViewModel() {

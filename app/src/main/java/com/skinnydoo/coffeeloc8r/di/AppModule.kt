@@ -11,32 +11,32 @@ import com.skinnydoo.coffeeloc8r.di.qualifier.LocaleLang
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
-    @Provides
-    fun provideResources(app: Application): Resources = app.resources
+  @Provides
+  fun provideResources(app: Application): Resources = app.resources
 
-    @Provides
-    @LocaleLang
-    fun provideLocaleLang(app: Application): String {
-        val currentLocale = ConfigurationCompat.getLocales(app.resources.configuration)[0]
-        return currentLocale.language
-    }
+  @Provides
+  @LocaleLang
+  fun provideLocaleLang(app: Application): String {
+    val currentLocale = ConfigurationCompat.getLocales(app.resources.configuration)[0]
+    return currentLocale.language
+  }
 
-    @Provides
-    fun providesConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE)
-                as ConnectivityManager
+  @Provides
+  fun providesConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+    context.getSystemService(Context.CONNECTIVITY_SERVICE)
+      as ConnectivityManager
 
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(app: Application): SharedPreferences {
-        return app.getSharedPreferences(AppConstants.SP_NAME, Context.MODE_PRIVATE)
-    }
+  @Provides
+  @Singleton
+  fun provideSharedPreferences(app: Application): SharedPreferences {
+    return app.getSharedPreferences(AppConstants.SP_NAME, Context.MODE_PRIVATE)
+  }
 }
